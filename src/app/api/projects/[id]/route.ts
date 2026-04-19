@@ -48,7 +48,7 @@ export async function PUT(
   }
 
   // Transaction: update project scalar fields, then replace products & capitalItems
-  const result = await prisma.$transaction(async (tx) => {
+  const result = await prisma.$transaction(async (tx: any) => {
     // Update scalar fields
     await tx.project.update({
       where: { id },
