@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Fpp Business</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f0f11;--bg2:#18181c;--bg3:#1e1e24;--bg4:#25252d;
+  --t1:#f0eff8;--t2:#9896aa;--t3:#5c5a6e;
+  --b1:rgba(255,255,255,.07);--b2:rgba(255,255,255,.13);
+  --green:#3ecf6a;--gbg:rgba(62,207,106,.12);--gbdr:rgba(62,207,106,.25);
+  --amber:#f5a623;--abg:rgba(245,166,35,.12);--abdr:rgba(245,166,35,.25);
+  --red:#ff5c5c;--rbg:rgba(255,92,92,.12);--rbdr:rgba(255,92,92,.25);
+  --blue:#6c8ef5;--bbg:rgba(108,142,245,.12);--bbdr:rgba(108,142,245,.3);
+  --purple:#a855f7;--pbg:rgba(168,85,247,.12);
+  --r:10px;--rl:14px;--rxl:18px;
+  --shadow:0 4px 24px rgba(0,0,0,.4);
+  --glow-blue:0 0 20px rgba(108,142,245,.2)
+}
+body{background:var(--bg);color:var(--t1);font-family:'Plus Jakarta Sans',system-ui,sans-serif;font-size:14px;line-height:1.5;min-height:100vh}
+#root{max-width:1120px;margin:0 auto;padding:1.5rem}
+input,select{font-family:inherit;font-size:13px;color:var(--t1);background:var(--bg3);border:1px solid var(--b2);border-radius:var(--r);padding:8px 12px;outline:none;width:100%;transition:all .2s}
+input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(108,142,245,.15)}
+select option{background:var(--bg3)}
+button{font-family:inherit;cursor:pointer;transition:all .15s}
+table{width:100%;border-collapse:collapse}
+::-webkit-scrollbar{width:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--b2);border-radius:3px}
+.card{background:var(--bg2);border:1px solid var(--b1);border-radius:var(--rl);padding:1.25rem}
+.card-hover{transition:border .2s,box-shadow .2s}
+.card-hover:hover{border-color:var(--b2);box-shadow:var(--shadow)}
+.col{display:flex;flex-direction:column;gap:10px}
+.row{display:flex;gap:10px;flex-wrap:wrap}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.tag{display:inline-block;font-size:11px;padding:2px 8px;border-radius:6px;font-weight:700}
+/* gradient accents */
+.gradient-text{background:linear-gradient(135deg,#6c8ef5,#a855f7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.header-glow{position:relative}
+.header-glow::before{content:'';position:absolute;inset:-1px;border-radius:calc(var(--rxl) + 1px);background:linear-gradient(135deg,rgba(108,142,245,.3),rgba(168,85,247,.2));z-index:-1;filter:blur(8px)}
+/* pill tabs */
+.tab-bar{display:flex;gap:3px;background:var(--bg3);border-radius:var(--rl);padding:4px;border:1px solid var(--b1)}
+.tab-btn{padding:8px 16px;font-size:13px;font-weight:600;border:none;border-radius:var(--r);background:transparent;color:var(--t2);transition:all .2s}
+.tab-btn.active{background:var(--bg4);color:var(--t1);box-shadow:0 2px 8px rgba(0,0,0,.3)}
+/* stat card */
+.stat{background:var(--bg3);border:1px solid var(--b1);border-radius:var(--rl);padding:1rem 1.1rem;flex:1;min-width:120px;transition:border .2s}
+.stat:hover{border-color:var(--b2)}
+.stat-label{font-size:10px;color:var(--t3);text-transform:uppercase;letter-spacing:.07em;font-weight:700;margin-bottom:5px}
+.stat-value{font-size:20px;font-weight:800;line-height:1.1}
+.stat-sub{font-size:11px;color:var(--t3);margin-top:4px}
+/* table */
+.tbl thead tr{background:var(--bg3)}
+.tbl th{padding:9px 12px;font-size:11px;font-weight:700;color:var(--t3);text-transform:uppercase;letter-spacing:.05em}
+.tbl td{padding:10px 12px;border-top:1px solid var(--b1);font-size:13px}
+.tbl tbody tr:hover{background:rgba(255,255,255,.02)}
+/* progress bar */
+.prog-track{background:var(--bg4);border-radius:6px;height:8px;overflow:hidden}
+.prog-fill{height:100%;border-radius:6px;transition:width .5s cubic-bezier(.4,0,.2,1)}
+/* inline input in table */
+.cell-input{border:none;background:transparent;width:100%;outline:none;font-size:12px;color:var(--t1);font-family:inherit}
+.cell-input:focus{color:#fff}
+/* alert box */
+.alert{border-radius:var(--r);padding:12px 14px;font-size:12px;line-height:1.7;border:1px solid}
+.alert-green{background:var(--gbg);border-color:var(--gbdr);color:#6ee89a}
+.alert-amber{background:var(--abg);border-color:var(--abdr);color:#f8c96a}
+.alert-red{background:var(--rbg);border-color:var(--rbdr);color:#ff8a8a}
+.alert-blue{background:var(--bbg);border-color:var(--bbdr);color:#8aaef8}
+/* bep meter */
+.bep-meter{height:12px;border-radius:8px;background:var(--bg4);overflow:hidden;position:relative}
+.bep-fill{height:100%;border-radius:8px;transition:width .6s ease}
+/* animated number */
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{animation:fadeUp .3s ease}
+/* modal overlay style for add form */
+.add-form{background:var(--bg3);border:1px solid var(--b2);border-radius:var(--rl);padding:1rem;margin-bottom:12px}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+<script>
+(function(){
+"use strict";
+var h=React.createElement,useState=React.useState,useMemo=React.useMemo,useRef=React.useRef,useEffect=React.useEffect,Fragment=React.Fragment;
+
+var _id=0;function uid(){return 'x'+(++_id);}
+function rp(n){return 'Rp\u00a0'+Math.round(n).toLocaleString('id-ID');}
+function rpM(n){return n>=1e9?'Rp '+(n/1e9).toFixed(1)+'M':n>=1e6?'Rp '+(n/1e6).toFixed(1)+' jt':n>=1e3?'Rp '+(n/1e3).toFixed(0)+' rb':rp(n);}
+function cut(s,n){return s&&s.length>n?s.slice(0,n)+'\u2026':s;}
+function calcHPP(p){var s=(p.ingredients||[]).reduce(function(a,i){return a+(+i.qty||0)*(+i.unitCost||0);},0);return s+(+p.packaging||0)+(+p.labor||0)+(+p.overhead||0);}
+function calcSell(hpp,m){if(hpp<=0)return 0;return Math.ceil(hpp/(1-Math.min(+m,99)/100)/100)*100;}
+function calcMarg(hpp,sell){return sell>0?(sell-hpp)/sell*100:0;}
+function mc(m){return m>=60?'var(--green)':m>=45?'var(--amber)':'var(--red)';}
+function mb(m){return m>=60?'var(--gbg)':m>=45?'var(--abg)':'var(--rbg)';}
+function mbc(m){return m>=60?'var(--gbdr)':m>=45?'var(--abdr)':'var(--rbdr)';}
+
+var CATCOL={Peralatan:'#f5a623',Furnitur:'#3ecf6a',Renovasi:'#6c8ef5',Legalitas:'#a855f7','Bahan Baku':'#ff5c5c',Sewa:'#22d3ee',Operasional:'#f97316'};
+var PICOL=['#6c8ef5','#3ecf6a','#f5a623','#ff5c5c','#a855f7','#22d3ee','#f97316'];
+
+var PRODS=[
+  {id:'p1',name:'Kopi Susu Gula Aren',category:'Minuman',targetMargin:65,ingredients:[{id:'a',name:'Espresso shot',qty:2,unit:'shot',unitCost:3000},{id:'b',name:'Susu segar',qty:150,unit:'ml',unitCost:15},{id:'c',name:'Gula aren cair',qty:30,unit:'ml',unitCost:40},{id:'d',name:'Es batu',qty:1,unit:'cup',unitCost:500}],packaging:1500,labor:1500,overhead:1000},
+  {id:'p2',name:'Nasi Goreng Spesial',category:'Makanan',targetMargin:58,ingredients:[{id:'a',name:'Nasi putih',qty:200,unit:'gr',unitCost:12},{id:'b',name:'Ayam fillet',qty:80,unit:'gr',unitCost:38},{id:'c',name:'Telur ayam',qty:2,unit:'butir',unitCost:2500},{id:'d',name:'Bumbu racik',qty:1,unit:'pcs',unitCost:2000},{id:'e',name:'Minyak goreng',qty:20,unit:'ml',unitCost:25}],packaging:2000,labor:3000,overhead:2000},
+  {id:'p3',name:'Es Teh Susu',category:'Minuman',targetMargin:72,ingredients:[{id:'a',name:'Teh celup',qty:2,unit:'kantong',unitCost:500},{id:'b',name:'Susu kental',qty:30,unit:'ml',unitCost:40},{id:'c',name:'Es batu',qty:1,unit:'cup',unitCost:500}],packaging:1000,labor:500,overhead:500},
+  {id:'p4',name:'Ayam Geprek Crispy',category:'Makanan',targetMargin:57,ingredients:[{id:'a',name:'Ayam potong',qty:150,unit:'gr',unitCost:38},{id:'b',name:'Tepung bumbu',qty:50,unit:'gr',unitCost:15},{id:'c',name:'Telur',qty:1,unit:'butir',unitCost:2500},{id:'d',name:'Minyak goreng',qty:100,unit:'ml',unitCost:25},{id:'e',name:'Sambal geprek',qty:1,unit:'porsi',unitCost:2000},{id:'f',name:'Nasi putih',qty:200,unit:'gr',unitCost:12}],packaging:2000,labor:3500,overhead:2500}
+];
+var CAPS=[
+  {id:'c1',name:'Mesin Espresso',category:'Peralatan',cost:8000000},
+  {id:'c2',name:'Coffee Grinder',category:'Peralatan',cost:2500000},
+  {id:'c3',name:'Kulkas Bar',category:'Peralatan',cost:3500000},
+  {id:'c4',name:'Peralatan Masak Set',category:'Peralatan',cost:4000000},
+  {id:'c5',name:'Meja & Kursi (6 set)',category:'Furnitur',cost:6000000},
+  {id:'c6',name:'Renovasi & Dekorasi',category:'Renovasi',cost:12000000},
+  {id:'c7',name:'SIUP + NIB + BPOM',category:'Legalitas',cost:2000000},
+  {id:'c8',name:'Stok Bahan Baku Awal',category:'Bahan Baku',cost:5000000},
+  {id:'c9',name:'Sewa Tempat 3 Bulan',category:'Sewa',cost:9000000},
+  {id:'c10',name:'Dana Cadangan Operasional',category:'Operasional',cost:5000000}
+];
+
+/* ── ATOMS ── */
+function Badge(props){
+  return h('span',{className:'tag',style:{background:mb(props.m),color:mc(props.m),border:'1px solid '+mbc(props.m)}},props.text);
+}
+function Btn(props){
+  var styles={
+    pri:{background:'linear-gradient(135deg,#6c8ef5,#a855f7)',color:'#fff',border:'none',padding:'8px 16px',borderRadius:'var(--r)',fontWeight:700,fontSize:12,boxShadow:'0 2px 12px rgba(108,142,245,.35)'},
+    sec:{background:'var(--bg4)',color:'var(--t1)',border:'1px solid var(--b2)',padding:'7px 14px',borderRadius:'var(--r)',fontWeight:600,fontSize:12},
+    danger:{background:'var(--rbg)',color:'var(--red)',border:'1px solid var(--rbdr)',padding:'7px 14px',borderRadius:'var(--r)',fontWeight:600,fontSize:12},
+    ghost:{background:'none',border:'none',color:'var(--t3)',fontSize:18,padding:'0 5px',lineHeight:1}
+  };
+  var s=Object.assign({},styles[props.v||'sec'],props.sx||{});
+  return h('button',{onClick:props.onClick,disabled:!!props.disabled,style:s},props.children);
+}
+function FLabel(props){
+  return h('div',null,
+    h('label',{style:{fontSize:11,color:'var(--t3)',display:'block',marginBottom:4,fontWeight:700,textTransform:'uppercase',letterSpacing:'.05em'}},props.text),
+    props.children
+  );
+}
+function StatCard(props){
+  return h('div',{className:'stat'},
+    h('div',{className:'stat-label'},props.label),
+    h('div',{className:'stat-value',style:{color:props.color||'var(--t1)'}},props.value),
+    props.sub&&h('div',{className:'stat-sub'},props.sub)
+  );
+}
+
+/* ── BAR CHART ── */
+function BarViz(props){
+  var data=props.data||[];
+  var maxV=data.reduce(function(mx,d){return Math.max(mx,(d.hpp||0)+(d.profit||0));},1);
+  return h('div',{style:{display:'flex',flexDirection:'column',gap:8,marginTop:6}},
+    data.map(function(d){
+      var total=(d.hpp||0)+(d.profit||0);
+      var hw=total?d.hpp/maxV*100:0,pw=total?d.profit/maxV*100:0;
+      return h('div',{key:d.name},
+        h('div',{style:{display:'flex',justifyContent:'space-between',fontSize:11,marginBottom:4}},
+          h('span',{style:{color:'var(--t2)',fontWeight:600}},d.name),
+          h('span',{style:{color:'var(--t3)'}},'Jual: '+rp(d.sell||0))
+        ),
+        h('div',{style:{display:'flex',height:20,borderRadius:6,overflow:'hidden',background:'var(--bg4)',gap:1}},
+          h('div',{style:{width:hw+'%',background:'rgba(255,92,92,.7)',transition:'width .4s',display:'flex',alignItems:'center',justifyContent:'flex-end',paddingRight:3}},
+            hw>15&&h('span',{style:{fontSize:9,color:'#fff',fontWeight:700}},'HPP')
+          ),
+          h('div',{style:{width:pw+'%',background:'rgba(62,207,106,.7)',transition:'width .4s',display:'flex',alignItems:'center',justifyContent:'flex-end',paddingRight:3}},
+            pw>12&&h('span',{style:{fontSize:9,color:'#fff',fontWeight:700}},'+')
+          )
+        ),
+        h('div',{style:{display:'flex',gap:12,marginTop:3,fontSize:10,color:'var(--t3)'}},
+          h('span',null,'HPP: '+rp(d.hpp||0)),
+          h('span',null,'Profit: '+rp(d.profit||0)),
+          d.margin&&h('span',{style:{color:mc(d.margin),fontWeight:700}},d.margin.toFixed(1)+'%')
+        )
+      );
+    }),
+    h('div',{style:{display:'flex',gap:14,marginTop:4,fontSize:11,color:'var(--t3)'}},
+      h('span',null,h('span',{style:{display:'inline-block',width:10,height:10,background:'rgba(255,92,92,.7)',borderRadius:2,marginRight:4}})),h('span',null,'HPP'),
+      h('span',null,h('span',{style:{display:'inline-block',width:10,height:10,background:'rgba(62,207,106,.7)',borderRadius:2,marginRight:4}})),h('span',null,'Profit')
+    )
+  );
+}
+
+/* ── PIE SVG ── */
+function PieSVG(props){
+  var data=(props.data||[]).filter(function(d){return d.value>0;});
+  var total=data.reduce(function(s,d){return s+d.value;},1);
+  var r=60,cx=70,cy=70,paths=[];
+  var angle=-Math.PI/2;
+  data.forEach(function(d,i){
+    var sl=d.value/total*Math.PI*2,end=angle+sl-.03;
+    var x1=cx+r*Math.cos(angle),y1=cy+r*Math.sin(angle);
+    var x2=cx+r*Math.cos(end),y2=cy+r*Math.sin(end);
+    var mid=angle+sl/2;
+    paths.push({d:'M'+cx+' '+cy+' L'+x1+' '+y1+' A'+r+' '+r+' 0 '+(sl>Math.PI?1:0)+' 1 '+x2+' '+y2+'Z',fill:PICOL[i%PICOL.length],pct:Math.round(d.value/total*100),name:d.name,mid:mid});
+    angle+=sl;
+  });
+  return h('div',{style:{display:'flex',alignItems:'center',gap:16,flexWrap:'wrap'}},
+    h('svg',{width:140,height:140,viewBox:'0 0 140 140'},
+      paths.map(function(p,i){return h('path',{key:i,d:p.d,fill:p.fill,opacity:.9});}),
+      h('circle',{cx:cx,cy:cy,r:28,fill:'var(--bg2)'}),
+      h('text',{x:cx,y:cy-4,textAnchor:'middle',fontSize:11,fill:'var(--t2)',fontWeight:700},'HPP'),
+      h('text',{x:cx,y:cy+12,textAnchor:'middle',fontSize:11,fill:'var(--t1)',fontWeight:800},rp(data.reduce(function(s,d){return s+d.value;},0)).replace('Rp\u00a0',''))
+    ),
+    h('div',{style:{display:'flex',flexDirection:'column',gap:5}},
+      paths.map(function(p,i){
+        return h('div',{key:i,style:{display:'flex',alignItems:'center',gap:7,fontSize:12}},
+          h('span',{style:{width:10,height:10,borderRadius:3,background:p.fill,flexShrink:0}}),
+          h('span',{style:{color:'var(--t2)'}}),
+          h('span',{style:{color:'var(--t2)'}},p.name),
+          h('span',{style:{color:'var(--t1)',fontWeight:700,marginLeft:'auto',paddingLeft:8}},p.pct+'%')
+        );
+      })
+    )
+  );
+}
+
+/* ════ TAB DASHBOARD ════ */
+function TabDash(props){
+  var e=props.enriched,avg=props.avg,best=props.best,cap=props.cap;
+  var totalRevenue=e.reduce(function(s,p){return s+p.sell;},0);
+  var totalHPP=e.reduce(function(s,p){return s+p.hpp;},0);
+  var barData=e.map(function(p){return {name:cut(p.name,11),hpp:Math.round(p.hpp),profit:Math.round(p.profit),sell:Math.round(p.sell),margin:p.margin};});
+  return h(Fragment,null,
+    h('div',{className:'row',style:{marginBottom:'1.25rem'}},
+      h(StatCard,{label:'Total Produk',value:e.length+' produk',sub:'Aktif di menu'}),
+      h(StatCard,{label:'Avg Margin',value:avg.toFixed(1)+'%',sub:'Rata-rata semua produk',color:mc(avg)}),
+      h(StatCard,{label:'Produk Terbaik',value:best?cut(best.name,13):'-',sub:best?'Margin '+best.margin.toFixed(1)+'%':'',color:'var(--blue)'}),
+      h(StatCard,{label:'Total Modal',value:rpM(cap),sub:'Investasi awal',color:'var(--purple)'})
+    ),
+    h('div',{className:'grid2'},
+      h('div',{className:'card'},
+        h('p',{style:{fontSize:13,fontWeight:700,margin:'0 0 12px',color:'var(--t2)',textTransform:'uppercase',letterSpacing:'.05em'}},'HPP vs Profit per Produk'),
+        h(BarViz,{data:barData})
+      ),
+      h('div',{className:'card'},
+        h('p',{style:{fontSize:13,fontWeight:700,margin:'0 0 12px',color:'var(--t2)',textTransform:'uppercase',letterSpacing:'.05em'}},'Ringkasan Produk'),
+        h('div',{className:'col'},
+          e.map(function(p){
+            return h('div',{key:p.id,style:{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'10px 12px',background:'var(--bg3)',borderRadius:'var(--r)',border:'1px solid var(--b1)'}},
+              h('div',null,
+                h('p',{style:{fontSize:13,fontWeight:600,margin:'0 0 2px'}},p.name),
+                h('p',{style:{fontSize:11,color:'var(--t3)',margin:0}},p.category+' \u00b7 HPP: '+rp(p.hpp))
+              ),
+              h('div',{style:{textAlign:'right'}},
+                h('p',{style:{fontSize:14,fontWeight:800,margin:'0 0 3px',color:'var(--t1)'}},rp(p.sell)),
+                h(Badge,{text:p.margin.toFixed(0)+'%',m:p.margin})
+              )
+            );
+          })
+        )
+      )
+    )
+  );
+}
+
+/* ════ TAB PRODUK & HPP ════ */
+function TabProduk(props){
+  var products=props.products,setProducts=props.setProducts,enriched=props.enriched;
+  var fs=useState(null),form=fs[0],setForm=fs[1];
+  var ns=useState(false),isNew=ns[0],setIsNew=ns[1];
+  function openEdit(id){var p=products.find(function(x){return x.id===id;});if(p){setIsNew(false);setForm(JSON.parse(JSON.stringify(p)));}}
+  function startNew(){setIsNew(true);setForm({id:uid(),name:'',category:'Makanan',targetMargin:55,ingredients:[],packaging:0,labor:0,overhead:0});}
+  function save(){if(!form||!form.name.trim())return;if(isNew){setProducts(function(ps){return ps.concat([form]);});}else{setProducts(function(ps){return ps.map(function(p){return p.id===form.id?form:p;});});}setIsNew(false);}
+  function del(id){setProducts(function(ps){return ps.filter(function(p){return p.id!==id;});});if(form&&form.id===id)setForm(null);}
+  function setIng(idx,field,val){setForm(function(f){var nf=JSON.parse(JSON.stringify(f));var v=(field==='qty'||field==='unitCost')?parseFloat(val)||0:val;nf.ingredients[idx][field]=v;return nf;});}
+  function setF(key,val){setForm(function(f){var nf=JSON.parse(JSON.stringify(f));nf[key]=val;return nf;});}
+  var fhpp=form?calcHPP(form):0,fsell=form?calcSell(fhpp,form.targetMargin):0,fmarg=calcMarg(fhpp,fsell),fprofit=fsell-fhpp;
+
+  return h('div',{style:{display:'grid',gridTemplateColumns:'230px 1fr',gap:16,alignItems:'start'}},
+    h('div',null,
+      h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}},
+        h('span',{style:{fontWeight:700,fontSize:13,color:'var(--t2)',textTransform:'uppercase',letterSpacing:'.05em'}},'Produk ('+enriched.length+')'),
+        h(Btn,{onClick:startNew,v:'pri'},'+ Baru')
+      ),
+      h('div',{className:'col'},
+        enriched.map(function(p){
+          var act=!isNew&&form&&form.id===p.id;
+          return h('div',{key:p.id,onClick:function(){openEdit(p.id);},className:'card-hover',style:{padding:'10px 12px',borderRadius:'var(--r)',cursor:'pointer',background:act?'rgba(108,142,245,.12)':'var(--bg3)',border:'1px solid '+(act?'var(--blue)':'var(--b1)'),transition:'all .15s'}},
+            h('p',{style:{fontSize:13,fontWeight:600,margin:'0 0 4px',color:act?'var(--blue)':'var(--t1)'}},p.name),
+            h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center'}},
+              h('span',{style:{fontSize:11,color:'var(--t3)'}},rp(p.sell)),
+              h(Badge,{text:p.margin.toFixed(0)+'%',m:p.margin})
+            )
+          );
+        })
+      )
+    ),
+    form?h('div',{className:'card'},
+      h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:'1.1rem'}},
+        h('p',{style:{fontSize:16,fontWeight:800,margin:0}},isNew?'Tambah Produk Baru':'Edit Produk'),
+        h('div',{style:{display:'flex',gap:8}},
+          !isNew&&h(Btn,{onClick:function(){del(form.id);},v:'danger'},'Hapus'),
+          h(Btn,{onClick:function(){setForm(null);}},'Batal'),
+          h(Btn,{onClick:save,v:'pri'},'Simpan')
+        )
+      ),
+      h('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr 110px',gap:10,marginBottom:'1rem'}},
+        h(FLabel,{text:'Nama Produk'},h('input',{value:form.name,onChange:function(e){setF('name',e.target.value);},placeholder:'Nama produk...'})),
+        h(FLabel,{text:'Kategori'},h('select',{value:form.category,onChange:function(e){setF('category',e.target.value);}},['Makanan','Minuman','Snack','Dessert'].map(function(c){return h('option',{key:c},c);}))),
+        h(FLabel,{text:'Margin %'},h('input',{type:'number',value:form.targetMargin,onChange:function(e){setF('targetMargin',parseFloat(e.target.value)||0);}}))
+      ),
+      h('div',{style:{marginBottom:'1rem'}},
+        h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:8}},
+          h('p',{style:{fontSize:13,fontWeight:700,margin:0}},'Bahan Baku'),
+          h(Btn,{onClick:function(){setForm(function(f){var nf=JSON.parse(JSON.stringify(f));nf.ingredients=nf.ingredients.concat([{id:uid(),name:'',qty:0,unit:'gr',unitCost:0}]);return nf;});}},'+\u00a0Bahan')
+        ),
+        h('div',{style:{border:'1px solid var(--b1)',borderRadius:'var(--r)',overflow:'hidden'}},
+          h('table',{className:'tbl'},
+            h('thead',null,h('tr',null,['Nama Bahan','Qty','Satuan','Harga/Satuan','Total',''].map(function(hd,i){return h('th',{key:i,style:{textAlign:i>=1&&i<=4?'right':'left',width:i===1?60:i===2?65:i===3?105:i===4?90:i===5?28:'auto'}},hd);}))),
+            h('tbody',null,
+              form.ingredients.length===0?h('tr',null,h('td',{colSpan:6,style:{padding:'14px',textAlign:'center',color:'var(--t3)',fontSize:12}},'Klik "+ Bahan" untuk menambahkan.')):
+              form.ingredients.map(function(ing,idx){
+                return h('tr',{key:ing.id},
+                  h('td',null,h('input',{className:'cell-input',value:ing.name,onChange:function(e){setIng(idx,'name',e.target.value);},placeholder:'Bahan...'})),
+                  h('td',{style:{textAlign:'right'}},h('input',{className:'cell-input',type:'number',value:ing.qty,onChange:function(e){setIng(idx,'qty',e.target.value);},style:{textAlign:'right'}})),
+                  h('td',null,h('input',{className:'cell-input',value:ing.unit,onChange:function(e){setIng(idx,'unit',e.target.value);}})),
+                  h('td',{style:{textAlign:'right'}},h('input',{className:'cell-input',type:'number',value:ing.unitCost,onChange:function(e){setIng(idx,'unitCost',e.target.value);},style:{textAlign:'right'}})),
+                  h('td',{style:{textAlign:'right',fontWeight:700,color:'var(--t2)',fontSize:12}},rp(ing.qty*ing.unitCost)),
+                  h('td',null,h(Btn,{onClick:function(){setForm(function(f){var nf=JSON.parse(JSON.stringify(f));nf.ingredients=nf.ingredients.filter(function(_,i){return i!==idx;});return nf;});},v:'ghost'},'×'))
+                );
+              })
+            )
+          )
+        )
+      ),
+      h('div',{className:'grid3',style:{marginBottom:'1rem'}},
+        h(FLabel,{text:'Packaging (Rp)'},h('input',{type:'number',value:form.packaging,onChange:function(e){setF('packaging',parseFloat(e.target.value)||0);}})),
+        h(FLabel,{text:'Tenaga Kerja (Rp)'},h('input',{type:'number',value:form.labor,onChange:function(e){setF('labor',parseFloat(e.target.value)||0);}})),
+        h(FLabel,{text:'Overhead/Porsi (Rp)'},h('input',{type:'number',value:form.overhead,onChange:function(e){setF('overhead',parseFloat(e.target.value)||0);}}))
+      ),
+      h('div',{style:{background:'linear-gradient(135deg,rgba(108,142,245,.08),rgba(168,85,247,.08))',borderRadius:'var(--r)',padding:'1rem',border:'1px solid var(--bbdr)'}},
+        h('p',{style:{fontSize:10,fontWeight:700,margin:'0 0 12px',color:'var(--t3)',textTransform:'uppercase',letterSpacing:'.07em'}},'Hasil Kalkulasi Otomatis'),
+        h('div',{className:'grid4'},
+          [['HPP Total',rp(fhpp),'var(--t1)'],['Harga Jual',rp(fsell),'var(--blue)'],['Profit/Porsi',rp(fprofit),'var(--green)'],['Margin Aktual',fmarg.toFixed(1)+'%',mc(fmarg)]].map(function(it){
+            return h('div',{key:it[0]},
+              h('p',{style:{fontSize:11,color:'var(--t3)',margin:'0 0 4px',fontWeight:600}},it[0]),
+              h('p',{style:{fontSize:18,fontWeight:800,margin:0,color:it[2]}},it[1])
+            );
+          })
+        )
+      )
+    ):h('div',{style:{display:'flex',flexDirection:'column',gap:6,alignItems:'center',justifyContent:'center',minHeight:300,border:'1px dashed var(--b2)',borderRadius:'var(--rl)',color:'var(--t3)'}},
+      h('p',{style:{fontSize:14,fontWeight:600}},'Pilih produk dari daftar'),
+      h('p',{style:{fontSize:12}},'atau klik "+ Baru" untuk menambahkan')
+    )
+  );
+}
+
+/* ════ TAB MODAL AWAL ════ */
+function TabModal(props){
+  var capital=props.capital,setCapital=props.setCapital,totalCapital=props.totalCapital;
+  var as=useState(false),adding=as[0],setAdding=as[1];
+  var fs=useState({name:'',category:'Peralatan',cost:''}),form=fs[0],setForm=fs[1];
+  function addItem(){var c=parseFloat(form.cost);if(!form.name.trim()||!c)return;setCapital(function(arr){return arr.concat([{id:uid(),name:form.name,category:form.category,cost:c}]);});setForm({name:'',category:'Peralatan',cost:''});setAdding(false);}
+  var catMap={};capital.forEach(function(item){catMap[item.category]=(catMap[item.category]||0)+item.cost;});
+  var catList=Object.keys(catMap).map(function(n){return {n:n,v:catMap[n]};}).sort(function(a,b){return b.v-a.v;});
+  return h('div',{style:{display:'grid',gridTemplateColumns:'1fr 270px',gap:16,alignItems:'start'}},
+    h('div',null,
+      h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}},
+        h('p',{style:{fontSize:16,fontWeight:800,margin:0}},'Rincian Modal Awal'),
+        h(Btn,{onClick:function(){setAdding(function(v){return !v;});},v:adding?'sec':'pri'},adding?'Batal':'+ Tambah Item')
+      ),
+      adding&&h('div',{className:'add-form'},
+        h('div',{style:{display:'grid',gridTemplateColumns:'1fr 130px 115px auto',gap:8,alignItems:'end'}},
+          h(FLabel,{text:'Nama Item'},h('input',{value:form.name,onChange:function(e){setForm(function(f){return Object.assign({},f,{name:e.target.value});});},placeholder:'e.g. Mesin Blender'})),
+          h(FLabel,{text:'Kategori'},h('select',{value:form.category,onChange:function(e){setForm(function(f){return Object.assign({},f,{category:e.target.value});})}},Object.keys(CATCOL).map(function(c){return h('option',{key:c},c);}))),
+          h(FLabel,{text:'Biaya (Rp)'},h('input',{type:'number',value:form.cost,onChange:function(e){setForm(function(f){return Object.assign({},f,{cost:e.target.value});});},placeholder:'0'})),
+          h(Btn,{onClick:addItem,v:'pri',sx:{alignSelf:'flex-end'}},'Tambah')
+        )
+      ),
+      h('div',{style:{border:'1px solid var(--b1)',borderRadius:'var(--rl)',overflow:'hidden'}},
+        h('table',{className:'tbl'},
+          h('thead',null,h('tr',null,['Item Pengeluaran','Kategori','Biaya',''].map(function(hd,i){return h('th',{key:i,style:{textAlign:i===2?'right':'left',width:i===1?130:i===2?125:i===3?32:'auto'}},hd);}))),
+          h('tbody',null,
+            capital.map(function(item){
+              return h('tr',{key:item.id},
+                h('td',{style:{fontWeight:500}},item.name),
+                h('td',null,h('span',{className:'tag',style:{background:(CATCOL[item.category]||'#888')+'22',color:CATCOL[item.category]||'var(--t2)',border:'1px solid '+(CATCOL[item.category]||'#888')+'44'}},item.category)),
+                h('td',{style:{textAlign:'right',fontWeight:700}},rp(item.cost)),
+                h('td',null,h(Btn,{onClick:function(){setCapital(function(arr){return arr.filter(function(x){return x.id!==item.id;});});},v:'ghost'},'×'))
+              );
+            })
+          ),
+          h('tfoot',null,h('tr',{style:{background:'rgba(108,142,245,.06)',borderTop:'1px solid var(--bbdr)'}},
+            h('td',{colSpan:2,style:{padding:'11px 12px',fontWeight:800,fontSize:14}},'TOTAL MODAL AWAL'),
+            h('td',{style:{padding:'11px 12px',textAlign:'right',fontWeight:800,fontSize:18,color:'var(--blue)'}},rp(totalCapital)),
+            h('td',null)
+          ))
+        )
+      )
+    ),
+    h('div',{className:'col'},
+      h('div',{style:{background:'linear-gradient(135deg,rgba(108,142,245,.15),rgba(168,85,247,.1))',borderRadius:'var(--rl)',padding:'1.1rem',border:'1px solid var(--bbdr)'}},
+        h('div',{className:'stat-label'},'Total Modal Dibutuhkan'),
+        h('div',{style:{fontSize:26,fontWeight:800,color:'var(--blue)',margin:'4px 0 2px'}},rp(totalCapital)),
+        h('div',{className:'stat-sub'},'Seluruh kebutuhan investasi awal')
+      ),
+      h('div',{className:'card'},
+        h('p',{style:{fontSize:13,fontWeight:700,margin:'0 0 12px'}},'Distribusi per Kategori'),
+        catList.map(function(item){
+          var pct=item.v/totalCapital*100;
+          return h('div',{key:item.n,style:{marginBottom:10}},
+            h('div',{style:{display:'flex',justifyContent:'space-between',fontSize:12,marginBottom:5}},
+              h('span',{style:{fontWeight:600,color:'var(--t1)'}},item.n),
+              h('span',{style:{color:CATCOL[item.n]||'var(--t2)',fontWeight:800}},pct.toFixed(1)+'%')
+            ),
+            h('div',{className:'prog-track'},
+              h('div',{className:'prog-fill',style:{width:pct+'%',background:CATCOL[item.n]||'#888'}})
+            ),
+            h('div',{style:{fontSize:11,color:'var(--t3)',marginTop:3,textAlign:'right'}},rp(item.v))
+          );
+        })
+      )
+    )
+  );
+}
+
+/* ════ TAB ANALISIS (ENHANCED) ════ */
+function TabAnalisis(props){
+  var enriched=props.enriched,totalCapital=props.totalCapital;
+  var ss=useState(enriched[0]?enriched[0].id:null),selId=ss[0],setSelId=ss[1];
+  var sp=enriched.find(function(p){return p.id===selId;})||enriched[0];
+
+  /* aggregate metrics */
+  var totalHPP=enriched.reduce(function(s,p){return s+p.hpp;},0);
+  var totalRevenue=enriched.reduce(function(s,p){return s+p.sell;},0);
+  var totalProfit=enriched.reduce(function(s,p){return s+p.profit;},0);
+  var avgMargin=enriched.length?enriched.reduce(function(s,p){return s+p.margin;},0)/enriched.length:0;
+  var capitalVsRevRatio=totalRevenue>0?totalCapital/totalRevenue:0;
+
+  /* pie */
+  var pieData=sp?[
+    {name:'Bahan Baku',value:Math.round((sp.ingredients||[]).reduce(function(s,i){return s+i.qty*i.unitCost;},0))},
+    {name:'Packaging',value:Math.round(sp.packaging||0)},
+    {name:'Tenaga Kerja',value:Math.round(sp.labor||0)},
+    {name:'Overhead',value:Math.round(sp.overhead||0)}
+  ].filter(function(x){return x.value>0;}):[],
+  sorted=[].concat(enriched).sort(function(a,b){return b.margin-a.margin;}),
+  low=enriched.filter(function(p){return p.margin<50;}),
+  high=enriched.filter(function(p){return p.margin>=65;});
+
+  /* health assessment */
+  var healthScore=0,healthNotes=[];
+  if(avgMargin>=60){healthScore+=30;healthNotes.push({type:'green',text:'Margin rata-rata '+avgMargin.toFixed(1)+'% — sangat sehat untuk F&B.'});}
+  else if(avgMargin>=45){healthScore+=20;healthNotes.push({type:'amber',text:'Margin rata-rata '+avgMargin.toFixed(1)+'% — cukup, tapi masih bisa dioptimasi.'});}
+  else{healthScore+=5;healthNotes.push({type:'red',text:'Margin rata-rata '+avgMargin.toFixed(1)+'% — di bawah standar industri F&B (45–65%).'});}
+  if(low.length===0){healthScore+=20;healthNotes.push({type:'green',text:'Tidak ada produk dengan margin merah (<50%). Portofolio sehat.'});}
+  else{healthNotes.push({type:'red',text:low.length+' produk bermargin <50% — perlu perbaikan segera.'});}
+  if(capitalVsRevRatio<3){healthScore+=20;healthNotes.push({type:'green',text:'Rasio modal terhadap harga jual produk wajar untuk bisnis ini.'});}
+  else{healthNotes.push({type:'amber',text:'Modal awal cukup besar dibanding total harga jual. Pastikan volume penjualan harian mencukupi.'});}
+  if(totalProfit/totalRevenue>0.5){healthScore+=15;healthNotes.push({type:'green',text:'Total profit '+((totalProfit/totalRevenue)*100).toFixed(0)+'% dari total revenue — sangat baik.'});}
+  else{healthNotes.push({type:'amber',text:'Total profit '+((totalProfit/totalRevenue)*100).toFixed(0)+'% dari total revenue. Standar F&B 50–70%.'});}
+  var healthLabel=healthScore>=70?'Sangat Sehat':healthScore>=50?'Cukup Sehat':'Perlu Perbaikan';
+  var healthColor=healthScore>=70?'var(--green)':healthScore>=50?'var(--amber)':'var(--red)';
+
+  return h(Fragment,null,
+    /* ── SUMMARY STATS ── */
+    h('div',{className:'row',style:{marginBottom:16}},
+      h(StatCard,{label:'Total HPP Semua Produk',value:rp(totalHPP),sub:'Biaya pokok gabungan'}),
+      h(StatCard,{label:'Total Harga Jual',value:rp(totalRevenue),sub:'Revenue per siklus produk',color:'var(--blue)'}),
+      h(StatCard,{label:'Total Profit/Siklus',value:rp(totalProfit),sub:'Margin rata-rata: '+avgMargin.toFixed(1)+'%',color:'var(--green)'}),
+      h(StatCard,{label:'Total Modal Awal',value:rpM(totalCapital),sub:'Seluruh investasi',color:'var(--purple)'})
+    ),
+
+    /* ── HEALTH ASSESSMENT ── */
+    h('div',{className:'card',style:{marginBottom:16,background:'linear-gradient(135deg,rgba(108,142,245,.06),rgba(168,85,247,.06))'}},
+      h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}},
+        h('p',{style:{fontSize:14,fontWeight:800,margin:0}},'Penilaian Kesehatan Bisnis'),
+        h('div',{style:{display:'flex',alignItems:'center',gap:10}},
+          h('div',{className:'prog-track',style:{width:120,height:10}},
+            h('div',{className:'prog-fill',style:{width:healthScore+'%',background:healthColor}})
+          ),
+          h('span',{style:{fontWeight:800,fontSize:15,color:healthColor}},healthLabel)
+        )
+      ),
+      h('div',{className:'grid2'},
+        healthNotes.map(function(n,i){
+          return h('div',{key:i,className:'alert alert-'+n.type,style:{fontSize:12}},n.text);
+        })
+      )
+    ),
+
+    /* ── PIE + RANKING ── */
+    h('div',{className:'grid2',style:{marginBottom:16}},
+      h('div',{className:'card'},
+        h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}},
+          h('p',{style:{fontSize:13,fontWeight:700,margin:0}},'Breakdown HPP per Produk'),
+          h('select',{value:selId||'',onChange:function(e){setSelId(e.target.value);},style:{fontSize:11,padding:'5px 9px',borderRadius:'var(--r)',border:'1px solid var(--b2)',background:'var(--bg3)',color:'var(--t1)',width:'auto'}},
+            enriched.map(function(p){return h('option',{key:p.id,value:p.id},p.name);})
+          )
+        ),
+        h(PieSVG,{data:pieData})
+      ),
+      h('div',{className:'card'},
+        h('p',{style:{fontSize:13,fontWeight:700,margin:'0 0 12px'}},'Ranking Margin Produk'),
+        h('table',{className:'tbl'},
+          h('thead',null,h('tr',null,['#','Produk','HPP','Jual','Margin','Profit/porsi'].map(function(hd,i){return h('th',{key:i,style:{textAlign:i>=2?'right':'left',width:i===0?28:i===4?60:'auto'}},hd);}))),
+          h('tbody',null,
+            sorted.map(function(p,idx){
+              return h('tr',{key:p.id},
+                h('td',{style:{color:'var(--t3)',fontWeight:700}},idx+1),
+                h('td',{style:{fontWeight:600}},cut(p.name,14)),
+                h('td',{style:{textAlign:'right',fontSize:12,color:'var(--t3)'}},rp(p.hpp)),
+                h('td',{style:{textAlign:'right',fontSize:12,color:'var(--blue)'}},rp(p.sell)),
+                h('td',{style:{textAlign:'right'}},h(Badge,{text:p.margin.toFixed(1)+'%',m:p.margin})),
+                h('td',{style:{textAlign:'right',fontWeight:700,color:'var(--green)'}},rp(p.profit))
+              );
+            })
+          )
+        )
+      )
+    ),
+
+    /* ── SARAN ── */
+    h('div',{className:'card'},
+      h('p',{style:{fontSize:14,fontWeight:800,margin:'0 0 12px'}},'Saran & Rekomendasi Analis'),
+      h('div',{className:'grid2'},
+        low.length>0&&h('div',{className:'alert alert-red'},
+          h('span',{style:{fontWeight:700,display:'block',marginBottom:4}}),'\u26a0 Produk bermargin rendah: '+low.map(function(p){return p.name;}).join(', '),
+          h('br',null),'Margin <50% tidak ideal. Lakukan: (1) naikkan harga jual 10–15%, (2) negosiasi harga bahan baku, (3) kurangi porsi overhead.'
+        ),
+        high.length>0&&h('div',{className:'alert alert-green'},
+          h('span',{style:{fontWeight:700,display:'block',marginBottom:4}},'\u2713 Produk bintang: '+high.map(function(p){return p.name;}).join(', ')),
+          'Margin >65% sangat baik. Prioritaskan promosi & bundling produk ini. Pertahankan kualitas dan pertimbangkan menaikkan harga 5–8% secara bertahap.'
+        ),
+        h('div',{className:'alert alert-blue'},
+          h('span',{style:{fontWeight:700,display:'block',marginBottom:4}},'\uD83D\uDCCA Rasio Modal vs Revenue'),
+          'Modal awal '+rpM(totalCapital)+' terhadap harga jual total '+rp(totalRevenue)+' per siklus. '+(capitalVsRevRatio>5?'Modal relatif besar — fokus pada volume penjualan harian yang tinggi.':'Rasio normal untuk bisnis F&B skala ini.')
+        ),
+        h('div',{className:'alert alert-amber'},
+          h('span',{style:{fontWeight:700,display:'block',marginBottom:4}},'\uD83D\uDCA1 Optimasi Lanjutan'),
+          'Review harga bahan baku setiap 3 bulan. Pantau inflasi bahan pokok. Targetkan margin rata-rata >60% untuk ketahanan bisnis jangka panjang.'
+        )
+      )
+    )
+  );
+}
+
+/* ════ TAB BEP ════ */
+function TabBEP(props){
+  var enriched=props.enriched,totalCapital=props.totalCapital;
+  var ts=useState('30'),targetDays=ts[0],setTargetDays=ts[1];
+  var ms=useState(''),mixSel=ms[0],setMixSel=ms[1];
+  var cs=useState(500000),fixedCost=cs[0],setFixedCost=cs[1];
+
+  /* default: equal mix */
+  var n=enriched.length||1;
+  var avgProfit=enriched.length?enriched.reduce(function(s,p){return s+p.profit;},0)/n:1;
+  var avgSell=enriched.length?enriched.reduce(function(s,p){return s+p.sell;},0)/n:1;
+  var selP=enriched.find(function(p){return p.id===mixSel;})||null;
+  var usedProfit=selP?selP.profit:avgProfit;
+  var usedSell=selP?selP.sell:avgSell;
+  var usedName=selP?selP.name:'Rata-rata semua produk';
+
+  var days=parseInt(targetDays)||30;
+  var monthlyFixed=fixedCost;
+  /* BEP units = total modal / profit per unit */
+  var bepUnits=usedProfit>0?Math.ceil(totalCapital/usedProfit):0;
+  var bepRevenue=bepUnits*usedSell;
+  /* BEP per bulan with fixed cost */
+  var bepMonthUnits=usedProfit>0?Math.ceil(monthlyFixed/usedProfit):0;
+  var dailyTarget=Math.ceil(bepUnits/days);
+  var dailyOpTarget=Math.ceil(bepMonthUnits/30);
+  var progressPct=Math.min(dailyTarget>0?100:0,100);
+
+  /* scenarios */
+  var scenarios=[10,20,30,50,100].map(function(d){
+    return {days:d,daily:Math.ceil(bepUnits/d),rev:Math.ceil(bepUnits/d)*usedSell*d};
+  });
+
+  return h('div',{className:'col'},
+    /* config */
+    h('div',{className:'card'},
+      h('p',{style:{fontSize:15,fontWeight:800,margin:'0 0 14px'}},'Konfigurasi Break Even Point'),
+      h('div',{className:'grid3'},
+        h(FLabel,{text:'Produk / Basis Kalkulasi'},
+          h('select',{value:mixSel,onChange:function(e){setMixSel(e.target.value);},style:{width:'100%'}},
+            h('option',{value:''},'Rata-rata semua produk'),
+            enriched.map(function(p){return h('option',{key:p.id,value:p.id},p.name);})
+          )
+        ),
+        h(FLabel,{text:'Target Balik Modal (Hari)'},
+          h('select',{value:targetDays,onChange:function(e){setTargetDays(e.target.value);},style:{width:'100%'}},
+            ['30','60','90','120','180','365'].map(function(d){return h('option',{key:d,value:d},d+' hari'+(d==='30'?' (1 bulan)':d==='90'?' (3 bulan)':d==='180'?' (6 bulan)':d==='365'?' (1 tahun)':''));})
+          )
+        ),
+        h(FLabel,{text:'Biaya Operasional/Bulan (Rp)'},
+          h('input',{type:'number',value:fixedCost,onChange:function(e){setFixedCost(parseFloat(e.target.value)||0);},placeholder:'500000'})
+        )
+      )
+    ),
+
+    /* main BEP result */
+    h('div',{style:{display:'grid',gridTemplateColumns:'1fr 1fr',gap:16}},
+      h('div',{style:{background:'linear-gradient(135deg,rgba(108,142,245,.12),rgba(168,85,247,.08))',borderRadius:'var(--rl)',padding:'1.25rem',border:'1px solid var(--bbdr)'}},
+        h('p',{style:{fontSize:10,color:'var(--t3)',fontWeight:700,textTransform:'uppercase',letterSpacing:'.07em',margin:'0 0 6px'}},'BEP Total Modal'),
+        h('p',{style:{fontSize:28,fontWeight:800,color:'var(--blue)',margin:'0 0 2px',lineHeight:1}},bepUnits.toLocaleString('id-ID')+' porsi'),
+        h('p',{style:{fontSize:12,color:'var(--t3)',margin:'0 0 10px'}},'Basis: '+usedName),
+        h('div',{style:{fontSize:13,color:'var(--t2)',lineHeight:2}},
+          h('div',null,'Revenue BEP: ',h('strong',{style:{color:'var(--blue)'}},rp(bepRevenue))),
+          h('div',null,'Profit/porsi: ',h('strong',{style:{color:'var(--green)'}},rp(usedProfit))),
+          h('div',null,'Target dalam ',days,' hari: ',h('strong',{style:{color:'var(--amber)'}},dailyTarget+' porsi/hari'))
+        )
+      ),
+      h('div',{style:{background:'linear-gradient(135deg,rgba(62,207,106,.08),rgba(34,211,238,.06))',borderRadius:'var(--rl)',padding:'1.25rem',border:'1px solid var(--gbdr)'}},
+        h('p',{style:{fontSize:10,color:'var(--t3)',fontWeight:700,textTransform:'uppercase',letterSpacing:'.07em',margin:'0 0 6px'}},'BEP Biaya Operasional / Bulan'),
+        h('p',{style:{fontSize:28,fontWeight:800,color:'var(--green)',margin:'0 0 2px',lineHeight:1}},bepMonthUnits.toLocaleString('id-ID')+' porsi'),
+        h('p',{style:{fontSize:12,color:'var(--t3)',margin:'0 0 10px'}},'Hanya untuk menutup biaya operasional'),
+        h('div',{style:{fontSize:13,color:'var(--t2)',lineHeight:2}},
+          h('div',null,'Biaya operasional: ',h('strong',{style:{color:'var(--amber)'}},rp(monthlyFixed))),
+          h('div',null,'Profit/porsi: ',h('strong',{style:{color:'var(--green)'}},rp(usedProfit))),
+          h('div',null,'Target harian: ',h('strong',{style:{color:'var(--amber)'}},dailyOpTarget+' porsi/hari'))
+        )
+      )
+    ),
+
+    /* scenarios table */
+    h('div',{className:'card'},
+      h('p',{style:{fontSize:14,fontWeight:800,margin:'0 0 12px'}},'Skenario Waktu Balik Modal'),
+      h('table',{className:'tbl'},
+        h('thead',null,h('tr',null,['Target Balik Modal','Total Porsi Dibutuhkan','Penjualan Harian','Total Revenue BEP','Status'].map(function(hd,i){return h('th',{key:i,style:{textAlign:i>=1&&i<=3?'center':'left'}},hd);}))),
+        h('tbody',null,
+          scenarios.map(function(sc){
+            var ok=sc.daily<=100;
+            return h('tr',{key:sc.days},
+              h('td',{style:{fontWeight:700}},sc.days+' hari'),
+              h('td',{style:{textAlign:'center',fontWeight:600}},bepUnits.toLocaleString('id-ID')+' porsi'),
+              h('td',{style:{textAlign:'center',fontWeight:800,fontSize:16,color:sc.daily<=50?'var(--green)':sc.daily<=100?'var(--amber)':'var(--red)'}},sc.daily+' porsi/hari'),
+              h('td',{style:{textAlign:'center',color:'var(--blue)',fontWeight:600}},rpM(sc.rev)),
+              h('td',null,h('span',{className:'tag',style:{background:ok?'var(--gbg)':'var(--rbg)',color:ok?'var(--green)':'var(--red)',border:'1px solid '+(ok?'var(--gbdr)':'var(--rbdr)')}},ok?'Realistis':'Berat'))
+            );
+          })
+        )
+      )
+    ),
+
+    /* BEP saran */
+    h('div',{className:'card'},
+      h('p',{style:{fontSize:14,fontWeight:800,margin:'0 0 10px'}},'Analisis & Saran BEP'),
+      h('div',{className:'col'},
+        h('div',{className:'alert alert-blue'},
+          h('span',{style:{fontWeight:700,display:'block',marginBottom:4}},'\uD83D\uDCCA Kondisi BEP Bisnis Ini'),
+          'Untuk balik modal '+rp(totalCapital)+' dalam '+days+' hari, Anda perlu menjual rata-rata ',
+          h('strong',null,dailyTarget+' porsi/hari'),
+          '. '+(dailyTarget<=30?'Target ini sangat realistis untuk warung/cafe kecil.':dailyTarget<=70?'Target cukup, pastikan lokasi ramai dan promosi aktif.':'Target ini cukup tinggi — pertimbangkan memperpanjang horizon BEP atau menurunkan modal awal.')
+        ),
+        h('div',{className:'alert alert-amber'},
+          h('span',{style:{fontWeight:700,display:'block',marginBottom:4}},'\uD83D\uDCA1 Tips Mempercepat BEP'),
+          '1. Fokus jual produk margin tinggi (>65%) untuk mempercepat recovery modal. 2. Tambah channel penjualan (GoFood, GrabFood, dll). 3. Buat paket bundling untuk naikkan average order value. 4. Kurangi biaya tetap di 3 bulan pertama.'
+        ),
+        h('div',{className:'alert alert-green'},
+          h('span',{style:{fontWeight:700,display:'block',marginBottom:4}},'\u2705 Proyeksi Profitabilitas'),
+          'Setelah BEP tercapai, dengan '+dailyTarget+' porsi/hari x profit '+rp(usedProfit)+'/porsi, potensi profit harian adalah ',
+          h('strong',null,rp(dailyTarget*usedProfit)),
+          ' atau ',h('strong',null,rp(dailyTarget*usedProfit*30)),' per bulan.'
+        )
+      )
+    )
+  );
+}
+
+/* ════ TAB SARAN AI ════ */
+function TabAI(props){
+  var enriched=props.enriched,avg=props.avg,cap=props.cap;
+  var ms=useState([]),msgs=ms[0],setMsgs=ms[1];
+  var is=useState(''),input=is[0],setInput=is[1];
+  var ls=useState(false),loading=ls[0],setLoading=ls[1];
+  var bottomRef=useRef(null);
+  useEffect(function(){if(bottomRef.current)bottomRef.current.scrollIntoView({behavior:'smooth'});},[msgs,loading]);
+  var sys='Kamu adalah Business Analyst berpengalaman 10+ tahun untuk bisnis F&B/kuliner. Berikan saran spesifik, actionable, berbasis data. Jawab bahasa Indonesia, singkat dan to the point.\n\nData bisnis:\n- Produk: '+enriched.length+'\n- Rata-rata margin: '+avg.toFixed(1)+'%\n- Modal awal: '+rp(cap)+'\n- '+enriched.map(function(p){return p.name+' (HPP: '+rp(p.hpp)+', Jual: '+rp(p.sell)+', Margin: '+p.margin.toFixed(1)+'%)';}).join('\n- ');
+  function send(){
+    if(!input.trim()||loading)return;
+    var q=input.trim();setInput('');
+    var nm=msgs.concat([{role:'user',content:q}]);
+    setMsgs(nm);setLoading(true);
+    fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,system:sys,messages:nm})
+    }).then(function(r){return r.json();}).then(function(d){
+      var t=(d.content||[]).map(function(b){return b.text||'';}).join('')||'Terjadi kesalahan.';
+      setMsgs(function(m){return m.concat([{role:'assistant',content:t}]);});setLoading(false);
+    }).catch(function(){
+      setMsgs(function(m){return m.concat([{role:'assistant',content:'Gagal terhubung. Cek koneksi internet.'}]);});setLoading(false);
+    });
+  }
+  var QQ=['Bagaimana cara meningkatkan margin produk saya?','Produk mana yang paling menguntungkan?','Berapa estimasi BEP dan target harian?','Strategi harga agar kompetitif tapi profit?','Cara menurunkan HPP tanpa korbankan kualitas?'];
+  return h('div',{className:'col'},
+    h('div',{className:'alert alert-blue',style:{fontSize:13}},'🤖 AI Business Advisor memiliki akses ke seluruh data Anda — HPP, margin, modal, dan BEP. Tanyakan apa saja untuk insight bisnis yang relevan.'),
+    msgs.length===0&&h('div',null,
+      h('p',{style:{fontSize:12,color:'var(--t3)',margin:'0 0 8px',fontWeight:700,textTransform:'uppercase',letterSpacing:'.05em'}},'Pertanyaan Populer'),
+      h('div',{style:{display:'flex',flexWrap:'wrap',gap:8}},
+        QQ.map(function(q){return h('button',{key:q,onClick:function(){setInput(q);},style:{fontSize:12,padding:'8px 13px',borderRadius:'var(--r)',border:'1px solid var(--b2)',background:'var(--bg3)',color:'var(--t2)',cursor:'pointer',lineHeight:1.5}},q);})
+      )
+    ),
+    msgs.length>0&&h('div',{style:{display:'flex',flexDirection:'column',gap:12,maxHeight:430,overflowY:'auto',paddingRight:4}},
+      msgs.map(function(m,i){
+        var isU=m.role==='user';
+        return h('div',{key:i,style:{display:'flex',gap:10,flexDirection:isU?'row-reverse':'row',alignItems:'flex-start'}},
+          h('div',{style:{width:32,height:32,borderRadius:'50%',background:isU?'var(--abg)':'var(--gbg)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:11,fontWeight:800,color:isU?'var(--amber)':'var(--green)',flexShrink:0,border:'1px solid '+(isU?'var(--abdr)':'var(--gbdr)')}},isU?'K':'AI'),
+          h('div',{style:{maxWidth:'84%',background:isU?'var(--bg3)':'var(--bg2)',border:'1px solid var(--b1)',borderRadius:'var(--rl)',padding:'10px 14px',fontSize:13,lineHeight:1.8,whiteSpace:'pre-wrap',color:'var(--t1)'}},m.content)
+        );
+      }),
+      loading&&h('div',{style:{display:'flex',gap:10}},
+        h('div',{style:{width:32,height:32,borderRadius:'50%',background:'var(--gbg)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:11,fontWeight:800,color:'var(--green)',border:'1px solid var(--gbdr)'}},'AI'),
+        h('div',{style:{background:'var(--bg2)',border:'1px solid var(--b1)',borderRadius:'var(--rl)',padding:'10px 14px',fontSize:13,color:'var(--t3)'}},'Menganalisis\u2026')
+      ),
+      h('div',{ref:bottomRef})
+    ),
+    h('div',{style:{display:'flex',gap:10}},
+      h('input',{value:input,onChange:function(e){setInput(e.target.value);},onKeyDown:function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();send();}},placeholder:'Tanya tentang strategi, HPP, BEP, harga, atau apapun tentang bisnis Anda...',style:{flex:1,padding:'11px 14px',fontSize:13}}),
+      h('button',{onClick:send,disabled:loading||!input.trim(),style:{padding:'11px 22px',fontSize:13,fontWeight:800,borderRadius:'var(--r)',border:'none',background:(loading||!input.trim())?'var(--bg3)':'linear-gradient(135deg,#6c8ef5,#a855f7)',color:(loading||!input.trim())?'var(--t3)':'#fff',flexShrink:0,boxShadow:(loading||!input.trim())?'none':'0 2px 12px rgba(108,142,245,.35)'}},loading?'\u2026':'Kirim')
+    )
+  );
+}
+
+/* ════ ROOT APP ════ */
+function App(){
+  var ts=useState('dashboard'),tab=ts[0],setTab=ts[1];
+  var ps=useState(PRODS),products=ps[0],setProducts=ps[1];
+  var cs=useState(CAPS),capital=cs[0],setCapital=cs[1];
+
+  var calc=useMemo(function(){
+    var enriched=products.map(function(p){var hpp=calcHPP(p),sell=calcSell(hpp,p.targetMargin);return Object.assign({},p,{hpp:hpp,sell:sell,profit:sell-hpp,margin:calcMarg(hpp,sell)});});
+    var avg=enriched.length?enriched.reduce(function(s,p){return s+p.margin;},0)/enriched.length:0;
+    var best=[].concat(enriched).sort(function(a,b){return b.margin-a.margin;})[0]||null;
+    return {enriched:enriched,avg:avg,best:best};
+  },[products]);
+
+  var totalCapital=useMemo(function(){return capital.reduce(function(s,c){return s+c.cost;},0);},[capital]);
+
+  var TABS=[
+    {id:'dashboard',icon:'\uD83D\uDCCA',label:'Dashboard'},
+    {id:'produk',icon:'\uD83C\uDF7D',label:'Produk & HPP'},
+    {id:'modal',icon:'\uD83D\uDCB0',label:'Modal Awal'},
+    {id:'analisis',icon:'\uD83D\uDCC8',label:'Analisis'},
+    {id:'bep',icon:'\uD83C\uDFAF',label:'Break Even'},
+    {id:'ai',icon:'\u2728',label:'Saran AI'}
+  ];
+
+  return h('div',null,
+    /* ── HEADER ── */
+    h('div',{style:{background:'var(--bg2)',borderRadius:'var(--rxl)',padding:'1.25rem 1.5rem',marginBottom:'1.25rem',border:'1px solid var(--b1)',position:'relative',overflow:'hidden'}},
+      h('div',{style:{position:'absolute',top:-40,right:-40,width:200,height:200,background:'radial-gradient(circle,rgba(108,142,245,.12) 0%,transparent 70%)',pointerEvents:'none'}}),
+      h('div',{style:{position:'absolute',bottom:-30,left:100,width:150,height:150,background:'radial-gradient(circle,rgba(168,85,247,.08) 0%,transparent 70%)',pointerEvents:'none'}}),
+      h('div',{style:{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:'1rem',position:'relative'}},
+        h('div',null,
+          h('h1',{style:{fontSize:22,fontWeight:800,margin:'0 0 3px',background:'linear-gradient(135deg,#e8e6ff,#a5b4fc)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',backgroundClip:'text'}},'Fpp Business'),
+          h('p',{style:{fontSize:12,color:'var(--t3)',margin:0}},'Platform Manajemen Bisnis F&B \u00b7 Kalkulator HPP, Margin & BEP')
+        ),
+        h('div',{style:{display:'flex',gap:8}},
+          calc.enriched.map(function(p){
+            return h('div',{key:p.id,style:{background:mb(p.margin),border:'1px solid '+mbc(p.margin),borderRadius:'var(--r)',padding:'3px 9px',fontSize:11,fontWeight:700,color:mc(p.margin)}},cut(p.name,8)+' '+p.margin.toFixed(0)+'%');
+          })
+        )
+      ),
+      h('div',{className:'tab-bar',style:{position:'relative'}},
+        TABS.map(function(t){
+          return h('button',{key:t.id,className:'tab-btn'+(tab===t.id?' active':''),onClick:function(){setTab(t.id);}},t.icon+' '+t.label);
+        })
+      )
+    ),
+
+    /* ── CONTENT ── */
+    h('div',{style:{background:'var(--bg2)',borderRadius:'var(--rxl)',padding:'1.5rem',border:'1px solid var(--b1)',minHeight:450}},
+      tab==='dashboard'?h(TabDash,{enriched:calc.enriched,avg:calc.avg,best:calc.best,cap:totalCapital}):null,
+      tab==='produk'?h(TabProduk,{products:products,setProducts:setProducts,enriched:calc.enriched}):null,
+      tab==='modal'?h(TabModal,{capital:capital,setCapital:setCapital,totalCapital:totalCapital}):null,
+      tab==='analisis'?h(TabAnalisis,{enriched:calc.enriched,totalCapital:totalCapital}):null,
+      tab==='bep'?h(TabBEP,{enriched:calc.enriched,totalCapital:totalCapital}):null,
+      tab==='ai'?h(TabAI,{enriched:calc.enriched,avg:calc.avg,cap:totalCapital}):null
+    ),
+
+    h('p',{style:{textAlign:'center',fontSize:11,color:'var(--t3)',marginTop:'1rem'}},'Fpp Business \u00a9 2025 \u00b7 Business Intelligence Platform')
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(h(App,null));
+})();
+</script>
+</body>
+</html>
