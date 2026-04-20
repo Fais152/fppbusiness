@@ -136,34 +136,36 @@ export default function AnalysisTab() {
           </CardHeader>
           <CardContent>
             {sorted.length > 0 ? (
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-border/50 text-muted-foreground pb-2 uppercase text-[10px] tracking-wider">
-                    <th className="text-left py-2">#</th>
-                    <th className="text-left py-2">Produk</th>
-                    <th className="text-right py-2">HPP</th>
-                    <th className="text-right py-2">Margin</th>
-                    <th className="text-right py-2 font-bold">Profit</th>
-                  </tr>
-                </thead>
-                <tbody className="divide-y divide-border/20">
-                  {sorted.map((p, idx) => (
-                    <tr key={p.id} className="hover:bg-muted/10">
-                      <td className="py-3 text-muted-foreground font-bold">{idx + 1}</td>
-                      <td className="py-3 font-semibold">{p.name.length > 15 ? p.name.substring(0,15)+'...' : p.name}</td>
-                      <td className="py-3 text-right text-muted-foreground">Rp {p.hpp.toLocaleString('id-ID')}</td>
-                      <td className="py-3 text-right">
-                        <span className={`inline-block px-1.5 py-0.5 rounded text-[10px] font-bold ${
-                          p.actualMargin >= 60 ? 'bg-[var(--success)]/10 text-[var(--success)]' : p.actualMargin >= 45 ? 'bg-[var(--warning)]/10 text-[var(--warning)]' : 'bg-[var(--danger)]/10 text-[var(--danger)]'
-                        }`}>
-                          {p.actualMargin.toFixed(1)}%
-                        </span>
-                      </td>
-                      <td className="py-3 text-right font-bold text-[var(--success)]">Rp {p.profit.toLocaleString('id-ID')}</td>
+              <div className="overflow-x-auto -mx-6 px-6 sm:mx-0 sm:px-0">
+                <table className="w-full text-sm min-w-[450px]">
+                  <thead>
+                    <tr className="border-b border-border/50 text-muted-foreground pb-2 uppercase text-[10px] tracking-wider">
+                      <th className="text-left py-2">#</th>
+                      <th className="text-left py-2">Produk</th>
+                      <th className="text-right py-2">HPP</th>
+                      <th className="text-right py-2">Margin</th>
+                      <th className="text-right py-2 font-bold">Profit</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody className="divide-y divide-border/20">
+                    {sorted.map((p, idx) => (
+                      <tr key={p.id} className="hover:bg-muted/10">
+                        <td className="py-3 text-muted-foreground font-bold">{idx + 1}</td>
+                        <td className="py-3 font-semibold">{p.name.length > 20 ? p.name.substring(0,20)+'...' : p.name}</td>
+                        <td className="py-3 text-right text-muted-foreground">Rp {p.hpp.toLocaleString('id-ID')}</td>
+                        <td className="py-3 text-right">
+                          <span className={`inline-block px-1.5 py-0.5 rounded text-[10px] font-bold ${
+                            p.actualMargin >= 60 ? 'bg-[var(--success)]/10 text-[var(--success)]' : p.actualMargin >= 45 ? 'bg-[var(--warning)]/10 text-[var(--warning)]' : 'bg-[var(--danger)]/10 text-[var(--danger)]'
+                          }`}>
+                            {p.actualMargin.toFixed(1)}%
+                          </span>
+                        </td>
+                        <td className="py-3 text-right font-bold text-[var(--success)]">Rp {p.profit.toLocaleString('id-ID')}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             ) : (
                <div className="flex items-center justify-center min-h-[200px] text-muted-foreground text-sm">Belum ada produk tersimpan.</div>
             )}
