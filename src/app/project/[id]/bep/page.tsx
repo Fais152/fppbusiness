@@ -58,7 +58,7 @@ export default function BreakEvenTab() {
   }));
 
   return (
-    <div className="grid lg:grid-cols-[300px_1fr] gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="flex flex-col lg:grid lg:grid-cols-[300px_1fr] gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
       
       {/* Config sidebar */}
       <div className="space-y-6">
@@ -117,39 +117,41 @@ export default function BreakEvenTab() {
             <CardTitle className="text-lg">Skenario Waktu Balik Modal</CardTitle>
           </CardHeader>
           <CardContent>
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-border/50 text-muted-foreground pb-2 uppercase text-[10px] tracking-wider text-left">
-                  <th className="py-2">Target Hari</th>
-                  <th className="py-2">Total Porsi</th>
-                  <th className="py-2 font-bold text-foreground">Target Harian</th>
-                  <th className="py-2">Total Revenue</th>
-                  <th className="py-2 text-center">Status Laju</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-border/20">
-                {scenarios.map(sc => {
-                  const ok = sc.daily <= 100;
-                  return (
-                    <tr key={sc.days} className="hover:bg-muted/10">
-                      <td className="py-3 font-semibold">{sc.days} Hari</td>
-                      <td className="py-3 text-muted-foreground">{bepUnits.toLocaleString('id-ID')} porsi</td>
-                      <td className={`py-3 font-extrabold ${sc.daily <= 50 ? 'text-[var(--success)]' : sc.daily <= 100 ? 'text-[var(--warning)]' : 'text-[var(--danger)]'}`}>
-                        {sc.daily} porsi/h
-                      </td>
-                      <td className="py-3 font-semibold text-[var(--info)]">Rp {(sc.rev / 1e6).toFixed(1)}M</td>
-                      <td className="py-3 text-center">
-                        <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-bold ${
-                          ok ? 'bg-[var(--success)]/10 text-[var(--success)]' : 'bg-[var(--danger)]/10 text-[var(--danger)]'
-                        }`}>
-                          {ok ? 'Realistis' : 'Berat'}
-                        </span>
-                      </td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </table>
+            <div className="overflow-x-auto -mx-6 px-6 sm:mx-0 sm:px-0">
+              <table className="w-full text-sm min-w-[500px]">
+                <thead>
+                  <tr className="border-b border-border/50 text-muted-foreground pb-2 uppercase text-[10px] tracking-wider text-left">
+                    <th className="py-2">Target Hari</th>
+                    <th className="py-2">Total Porsi</th>
+                    <th className="py-2 font-bold text-foreground">Target Harian</th>
+                    <th className="py-2">Total Revenue</th>
+                    <th className="py-2 text-center">Status Laju</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-border/20">
+                  {scenarios.map(sc => {
+                    const ok = sc.daily <= 100;
+                    return (
+                      <tr key={sc.days} className="hover:bg-muted/10">
+                        <td className="py-3 font-semibold">{sc.days} Hari</td>
+                        <td className="py-3 text-muted-foreground">{bepUnits.toLocaleString('id-ID')} porsi</td>
+                        <td className={`py-3 font-extrabold ${sc.daily <= 50 ? 'text-[var(--success)]' : sc.daily <= 100 ? 'text-[var(--warning)]' : 'text-[var(--danger)]'}`}>
+                          {sc.daily} porsi/h
+                        </td>
+                        <td className="py-3 font-semibold text-[var(--info)]">Rp {(sc.rev / 1e6).toFixed(1)}M</td>
+                        <td className="py-3 text-center">
+                          <span className={`inline-block px-2 py-0.5 rounded text-[10px] font-bold ${
+                            ok ? 'bg-[var(--success)]/10 text-[var(--success)]' : 'bg-[var(--danger)]/10 text-[var(--danger)]'
+                          }`}>
+                            {ok ? 'Realistis' : 'Berat'}
+                          </span>
+                        </td>
+                      </tr>
+                    )
+                  })}
+                </tbody>
+              </table>
+            </div>
           </CardContent>
         </Card>
 

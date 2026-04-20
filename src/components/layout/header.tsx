@@ -11,53 +11,50 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full glass">
-      <div className="container flex h-14 items-center max-w-6xl mx-auto px-4">
-        <div className="mr-4 flex">
-          <Link href="/" className="mr-6 flex items-center space-x-2">
-            <span className="font-bold text-primary text-lg tracking-tight">
-              Fpp Business
+      <div className="container flex h-16 items-center max-w-6xl mx-auto px-4">
+        <div className="flex items-center gap-2 md:gap-4">
+          <Link href="/" className="flex items-center space-x-2">
+            <span className="font-bold text-primary text-xl tracking-tighter sm:tracking-tight bg-primary/5 px-2 py-1 rounded">
+              Fpp<span className="text-foreground">Business</span>
             </span>
           </Link>
-          <nav className="hidden md:flex items-center space-x-6 text-sm font-medium">
+          <nav className="hidden sm:flex items-center space-x-1 underline-offset-4 text-sm font-medium">
             <Link
               href="/dashboard"
-              className="transition-colors hover:text-primary text-muted-foreground"
+              className="px-3 py-2 transition-colors hover:text-primary text-muted-foreground rounded-lg hover:bg-muted/50"
             >
               Dashboard
             </Link>
           </nav>
         </div>
 
-        <div className="flex flex-1 items-center justify-end space-x-3">
+        <div className="flex flex-1 items-center justify-end space-x-2">
           <ThemeToggle />
           
           {status === "loading" ? (
-            <div className="w-20 h-8 bg-muted animate-pulse rounded-md"></div>
+            <div className="w-10 sm:w-20 h-8 bg-muted animate-pulse rounded-md"></div>
           ) : session ? (
-            <div className="flex items-center gap-3 ml-2 border-l border-border/50 pl-4">
-              <div className="hidden sm:flex items-center gap-2 text-sm text-muted-foreground mr-1">
-                <span className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs">
+            <div className="flex items-center gap-2 md:gap-3 ml-1 sm:ml-2 border-l border-border/50 pl-2 sm:pl-4">
+              <div className="hidden md:flex items-center gap-2 text-sm text-muted-foreground mr-1">
+                <span className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold text-xs">
                   {session.user?.name?.charAt(0).toUpperCase() || session.user?.email?.charAt(0).toUpperCase()}
                 </span>
                 <span className="max-w-[100px] truncate">{session.user?.name || session.user?.email}</span>
               </div>
-              <Link href="/dashboard" className={buttonVariants({ variant: "outline", size: "sm", className: "hidden md:flex rounded-lg" })}>
-                Dashboard
-              </Link>
               <button
                 onClick={() => signOut({ callbackUrl: "/" })}
-                className="text-muted-foreground hover:text-destructive transition-colors p-2 rounded-lg hover:bg-muted"
+                className="text-muted-foreground hover:text-destructive transition-colors p-2 rounded-lg hover:bg-muted/80"
                 title="Logout"
               >
                 <LogOut className="w-4 h-4" />
               </button>
             </div>
           ) : (
-            <div className="flex items-center gap-2 ml-2 border-l border-border/50 pl-4">
-              <Link href="/login" className={buttonVariants({ variant: "ghost", size: "sm", className: "rounded-lg" })}>
+            <div className="flex items-center gap-1 sm:gap-2 ml-1 sm:ml-2 border-l border-border/50 pl-2 sm:pl-4">
+              <Link href="/login" className={buttonVariants({ variant: "ghost", size: "sm", className: "rounded-lg text-xs sm:text-sm px-2 sm:px-3" })}>
                 Masuk
               </Link>
-              <Link href="/register" className={buttonVariants({ size: "sm", className: "gradient-bg rounded-lg shadow-sm" })}>
+              <Link href="/register" className={buttonVariants({ size: "sm", className: "gradient-bg rounded-lg shadow-sm text-xs sm:text-sm px-2 sm:px-4" })}>
                 Daftar
               </Link>
             </div>

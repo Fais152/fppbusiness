@@ -80,7 +80,7 @@ export default function ProjectLayout({ children }: { children: React.ReactNode 
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex gap-1 overflow-x-auto pb-2 scrollbar-hide">
+        <div className="flex gap-1 overflow-x-auto pb-2 scrollbar-hide -mx-2 px-2 mask-fade-right">
           {TABS.map(tab => {
             const isRoot = tab.id === '';
             const isActive = isRoot
@@ -93,10 +93,10 @@ export default function ProjectLayout({ children }: { children: React.ReactNode 
               <Link
                 key={tab.id}
                 href={`/project/${project.id}${isRoot ? '' : `/${tab.id}`}`}
-                className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold whitespace-nowrap transition-all duration-200 ${
+                className={`flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-semibold whitespace-nowrap transition-all duration-200 border ${
                   isActive
-                    ? 'bg-primary text-primary-foreground shadow-sm'
-                    : 'text-muted-foreground hover:text-foreground hover:bg-muted/50'
+                    ? 'bg-primary text-primary-foreground shadow-sm border-primary'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-muted/50 border-transparent'
                 }`}
               >
                 <Icon className="w-4 h-4" />
@@ -108,7 +108,7 @@ export default function ProjectLayout({ children }: { children: React.ReactNode 
       </div>
 
       {/* Main Content Area */}
-      <div className="glass-card min-h-[500px] p-6 rounded-xl">
+      <div className="glass-card min-h-[500px] p-4 sm:p-6 rounded-xl">
         {children}
       </div>
     </div>

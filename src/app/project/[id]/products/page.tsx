@@ -100,7 +100,7 @@ export default function ProductsTab() {
   const fmarg = fsell > 0 ? (fprofit / fsell) * 100 : 0;
 
   return (
-    <div className="grid md:grid-cols-[300px_1fr] gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="flex flex-col md:grid md:grid-cols-[300px_1fr] gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
       
       {/* Sidebar List */}
       <div>
@@ -146,16 +146,16 @@ export default function ProductsTab() {
       {/* Form Editor */}
       {form ? (
         <div className="bg-card/60 border border-border/50 rounded-xl p-6">
-          <div className="flex justify-between items-center mb-8">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-8 gap-4">
             <h2 className="text-xl font-extrabold">{isNew ? 'Tambah Produk Baru' : 'Edit Produk'}</h2>
-            <div className="flex gap-2">
-              {!isNew && <Button variant="destructive" size="sm" onClick={() => handleDeleteProduct(form.id)}><Trash2 className="w-4 h-4 mr-2" /> Hapus</Button>}
-              <Button variant="outline" size="sm" onClick={() => { setForm(null); setIsNew(false); }}>Batal</Button>
-              <Button size="sm" className="gradient-bg" onClick={handleSave}><Save className="w-4 h-4 mr-2" /> Simpan</Button>
+            <div className="flex gap-2 w-full sm:w-auto">
+              {!isNew && <Button variant="destructive" size="sm" className="flex-1 sm:flex-none" onClick={() => handleDeleteProduct(form.id)}><Trash2 className="w-4 h-4 mr-2" /> Hapus</Button>}
+              <Button variant="outline" size="sm" className="flex-1 sm:flex-none" onClick={() => { setForm(null); setIsNew(false); }}>Batal</Button>
+              <Button size="sm" className="gradient-bg flex-1 sm:flex-none" onClick={handleSave}><Save className="w-4 h-4 mr-2" /> Simpan</Button>
             </div>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-4 mb-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
             <div className="space-y-2 text-sm font-medium">
               <Label>Nama Produk</Label>
               <Input value={form.name} onChange={e => setForm({...form, name: e.target.value})} className="bg-background/80" placeholder="Cth: Nasi Goreng" />
@@ -173,7 +173,7 @@ export default function ProductsTab() {
                 </SelectContent>
               </Select>
             </div>
-            <div className="space-y-2 text-sm font-medium">
+            <div className="space-y-2 text-sm font-medium sm:col-span-2 md:col-span-1">
               <Label>Target Margin (%)</Label>
               <Input type="number" value={form.targetMargin} onChange={e => setForm({...form, targetMargin: parseFloat(e.target.value)||0})} className="bg-background/80" />
             </div>
@@ -188,7 +188,8 @@ export default function ProductsTab() {
             </div>
             
             <div className="border border-border/50 rounded-lg overflow-hidden bg-card/40">
-              <div className="grid grid-cols-[1fr_80px_80px_100px_100px_40px] gap-2 p-3 bg-muted/50 text-[11px] font-bold uppercase tracking-wide text-muted-foreground border-b border-border/50">
+              {/* Desktop Header */}
+              <div className="hidden lg:grid lg:grid-cols-[1fr_80px_80px_100px_100px_40px] gap-2 p-3 bg-muted/50 text-[11px] font-bold uppercase tracking-wide text-muted-foreground border-b border-border/50">
                 <div>Nama Bahan</div>
                 <div className="text-right">Qty</div>
                 <div>Satuan</div>
@@ -202,13 +203,34 @@ export default function ProductsTab() {
               ) : (
                 <div className="divide-y divide-border/50">
                   {form.ingredients.map((ing, idx) => (
-                    <div key={idx} className="grid grid-cols-[1fr_80px_80px_100px_100px_40px] gap-2 p-2 items-center hover:bg-muted/10">
-                      <Input value={ing.name} onChange={e => handleIngChange(idx, 'name', e.target.value)} className="h-8 text-xs bg-transparent border-transparent focus-visible:border-primary/50 focus-visible:bg-background" placeholder="Bahan..." />
-                      <Input type="number" value={ing.qty} onChange={e => handleIngChange(idx, 'qty', e.target.value)} className="h-8 text-xs bg-transparent border-transparent text-right focus-visible:border-primary/50 focus-visible:bg-background" />
-                      <Input value={ing.unit} onChange={e => handleIngChange(idx, 'unit', e.target.value)} className="h-8 text-xs bg-transparent border-transparent focus-visible:border-primary/50 focus-visible:bg-background" />
-                      <Input type="number" value={ing.unitCost} onChange={e => handleIngChange(idx, 'unitCost', e.target.value)} className="h-8 text-xs bg-transparent border-transparent text-right focus-visible:border-primary/50 focus-visible:bg-background" />
-                      <div className="text-right text-xs font-bold text-muted-foreground">Rp {(ing.qty * ing.unitCost).toLocaleString('id-ID')}</div>
-                      <Button variant="ghost" size="icon" className="h-8 w-8 text-muted-foreground hover:text-destructive" onClick={() => removeIngredient(idx)}>
+                    <div key={idx} className="flex flex-col lg:grid lg:grid-cols-[1fr_80px_80px_100px_100px_40px] gap-3 lg:gap-2 p-4 lg:p-2 items-start lg:items-center hover:bg-muted/10 relative">
+                      <div className="w-full lg:w-auto">
+                        <Label className="lg:hidden text-[10px] uppercase font-bold text-muted-foreground mb-1 block">Nama Bahan</Label>
+                        <Input value={ing.name} onChange={e => handleIngChange(idx, 'name', e.target.value)} className="h-9 lg:h-8 text-sm lg:text-xs bg-muted/30 lg:bg-transparent border-border/30 lg:border-transparent focus-visible:border-primary/50 focus-visible:bg-background" placeholder="Bahan..." />
+                      </div>
+                      <div className="grid grid-cols-2 lg:block gap-4 w-full lg:w-auto">
+                        <div className="w-full lg:w-auto">
+                          <Label className="lg:hidden text-[10px] uppercase font-bold text-muted-foreground mb-1 block text-right lg:text-left">Qty</Label>
+                          <Input type="number" value={ing.qty} onChange={e => handleIngChange(idx, 'qty', e.target.value)} className="h-9 lg:h-8 text-sm lg:text-xs bg-muted/30 lg:bg-transparent border-border/30 lg:border-transparent text-right focus-visible:border-primary/50 focus-visible:bg-background" />
+                        </div>
+                        <div className="w-full lg:w-auto">
+                          <Label className="lg:hidden text-[10px] uppercase font-bold text-muted-foreground mb-1 block">Satuan</Label>
+                          <Input value={ing.unit} onChange={e => handleIngChange(idx, 'unit', e.target.value)} className="h-9 lg:h-8 text-sm lg:text-xs bg-muted/30 lg:bg-transparent border-border/30 lg:border-transparent focus-visible:border-primary/50 focus-visible:bg-background" />
+                        </div>
+                      </div>
+                      <div className="grid grid-cols-2 lg:block gap-4 w-full lg:w-auto">
+                        <div className="w-full lg:w-auto">
+                          <Label className="lg:hidden text-[10px] uppercase font-bold text-muted-foreground mb-1 block text-right lg:text-left">Harga/Sat</Label>
+                          <Input type="number" value={ing.unitCost} onChange={e => handleIngChange(idx, 'unitCost', e.target.value)} className="h-9 lg:h-8 text-sm lg:text-xs bg-muted/30 lg:bg-transparent border-border/30 lg:border-transparent text-right focus-visible:border-primary/50 focus-visible:bg-background" />
+                        </div>
+                        <div className="w-full lg:w-auto">
+                          <Label className="lg:hidden text-[10px] uppercase font-bold text-muted-foreground mb-1 block text-right lg:text-left">Total</Label>
+                          <div className="h-9 lg:h-8 flex items-center justify-end text-xs font-bold text-primary lg:text-muted-foreground">
+                            Rp {(ing.qty * ing.unitCost).toLocaleString('id-ID')}
+                          </div>
+                        </div>
+                      </div>
+                      <Button variant="ghost" size="icon" className="h-8 w-8 absolute top-4 right-4 lg:relative lg:top-0 lg:right-0 text-muted-foreground hover:text-destructive" onClick={() => removeIngredient(idx)}>
                         <X className="w-4 h-4" />
                       </Button>
                     </div>
@@ -218,7 +240,7 @@ export default function ProductsTab() {
             </div>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-4 mb-8">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
             <div className="space-y-2 text-sm font-medium">
               <Label>Packaging (Rp)</Label>
               <Input type="number" value={form.packaging} onChange={e => setForm({...form, packaging: parseFloat(e.target.value)||0})} className="bg-background/80" />
