@@ -203,29 +203,29 @@ export default function ProductsTab() {
               ) : (
                 <div className="divide-y divide-border/50">
                   {form.ingredients.map((ing, idx) => (
-                    <div key={idx} className="flex flex-col lg:grid lg:grid-cols-[1fr_80px_80px_100px_100px_40px] gap-3 lg:gap-2 p-4 lg:p-2 items-start lg:items-center hover:bg-muted/10 relative">
-                      <div className="w-full lg:w-auto">
+                    <div key={idx} className="flex flex-col lg:grid lg:grid-cols-[1fr_80px_80px_100px_100px_40px] gap-3 lg:gap-2 p-4 lg:p-2 items-start lg:items-center hover:bg-muted/10 relative border-b lg:border-b-0 border-border/30 last:border-0">
+                      <div className="w-full lg:w-auto pr-8 lg:pr-0">
                         <Label className="lg:hidden text-[10px] uppercase font-bold text-muted-foreground mb-1 block">Nama Bahan</Label>
                         <Input value={ing.name} onChange={e => handleIngChange(idx, 'name', e.target.value)} className="h-9 lg:h-8 text-sm lg:text-xs bg-muted/30 lg:bg-transparent border-border/30 lg:border-transparent focus-visible:border-primary/50 focus-visible:bg-background" placeholder="Bahan..." />
                       </div>
-                      <div className="grid grid-cols-2 lg:block gap-4 w-full lg:w-auto">
-                        <div className="w-full lg:w-auto">
-                          <Label className="lg:hidden text-[10px] uppercase font-bold text-muted-foreground mb-1 block text-right lg:text-left">Qty</Label>
-                          <Input type="number" value={ing.qty} onChange={e => handleIngChange(idx, 'qty', e.target.value)} className="h-9 lg:h-8 text-sm lg:text-xs bg-muted/30 lg:bg-transparent border-border/30 lg:border-transparent text-right focus-visible:border-primary/50 focus-visible:bg-background" />
+                      <div className="flex flex-row gap-2 w-full lg:contents">
+                        <div className="flex-1 lg:w-auto">
+                          <Label className="lg:hidden text-[10px] uppercase font-bold text-muted-foreground mb-1 block">Qty</Label>
+                          <Input type="number" value={ing.qty} onChange={e => handleIngChange(idx, 'qty', e.target.value)} className="h-9 lg:h-8 text-sm lg:text-xs bg-muted/30 lg:bg-transparent border-border/30 lg:border-transparent lg:text-right focus-visible:border-primary/50 focus-visible:bg-background" />
                         </div>
-                        <div className="w-full lg:w-auto">
+                        <div className="flex-1 lg:w-auto">
                           <Label className="lg:hidden text-[10px] uppercase font-bold text-muted-foreground mb-1 block">Satuan</Label>
                           <Input value={ing.unit} onChange={e => handleIngChange(idx, 'unit', e.target.value)} className="h-9 lg:h-8 text-sm lg:text-xs bg-muted/30 lg:bg-transparent border-border/30 lg:border-transparent focus-visible:border-primary/50 focus-visible:bg-background" />
                         </div>
                       </div>
-                      <div className="grid grid-cols-2 lg:block gap-4 w-full lg:w-auto">
-                        <div className="w-full lg:w-auto">
-                          <Label className="lg:hidden text-[10px] uppercase font-bold text-muted-foreground mb-1 block text-right lg:text-left">Harga/Sat</Label>
-                          <Input type="number" value={ing.unitCost} onChange={e => handleIngChange(idx, 'unitCost', e.target.value)} className="h-9 lg:h-8 text-sm lg:text-xs bg-muted/30 lg:bg-transparent border-border/30 lg:border-transparent text-right focus-visible:border-primary/50 focus-visible:bg-background" />
+                      <div className="flex flex-row gap-2 w-full lg:contents">
+                        <div className="flex-1 lg:w-auto">
+                          <Label className="lg:hidden text-[10px] uppercase font-bold text-muted-foreground mb-1 block">Harga/Sat</Label>
+                          <Input type="number" value={ing.unitCost} onChange={e => handleIngChange(idx, 'unitCost', e.target.value)} className="h-9 lg:h-8 text-sm lg:text-xs bg-muted/30 lg:bg-transparent border-border/30 lg:border-transparent lg:text-right focus-visible:border-primary/50 focus-visible:bg-background" />
                         </div>
-                        <div className="w-full lg:w-auto">
-                          <Label className="lg:hidden text-[10px] uppercase font-bold text-muted-foreground mb-1 block text-right lg:text-left">Total</Label>
-                          <div className="h-9 lg:h-8 flex items-center justify-end text-xs font-bold text-primary lg:text-muted-foreground">
+                        <div className="flex-1 lg:w-auto">
+                          <Label className="lg:hidden text-[10px] uppercase font-bold text-muted-foreground mb-1 block">Total</Label>
+                          <div className="h-9 lg:h-8 flex items-center lg:justify-end text-sm lg:text-xs font-bold text-primary lg:text-muted-foreground bg-muted/30 lg:bg-transparent px-3 lg:px-0 rounded-md lg:rounded-none">
                             Rp {(ing.qty * ing.unitCost).toLocaleString('id-ID')}
                           </div>
                         </div>
