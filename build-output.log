@@ -1,0 +1,39 @@
+
+> hpp@0.1.0 build
+> next build
+
+Gû¦ Next.js 16.2.4 (Turbopack)
+- Environments: .env
+
+  Creating an optimized production build ...
+G£ô Compiled successfully in 4.3s
+  Running TypeScript ...
+  Finished TypeScript in 6.1s ...
+  Collecting page data using 15 workers ...
+Error [PrismaClientInitializationError]: `PrismaClient` needs to be constructed with a non-empty, valid `PrismaClientOptions`:
+System.Management.Automation.RemoteException
+```
+new PrismaClient({
+  ...
+})
+```
+System.Management.Automation.RemoteException
+or
+System.Management.Automation.RemoteException
+```
+constructor() {
+  super({ ... });
+}
+```
+          
+    at <unknown> (C:\new-project\hpp\.next\server\chunks\[root-of-the-server]__09vu~93._.js:1:33246) {
+  clientVersion: '7.7.0',
+  errorCode: undefined,
+  retryable: undefined
+}
+System.Management.Automation.RemoteException
+> Build error occurred
+Error: Failed to collect page data for /api/auth/register
+    at ignore-listed frames {
+  type: 'Error'
+}
