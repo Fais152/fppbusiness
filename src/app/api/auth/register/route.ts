@@ -44,7 +44,16 @@ export async function POST(req: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
-    console.error("Register error:", error);
+    const err = error instanceof Error ? error.message : String(error);
+    console.error("Register error:", err);
+    
+    if (err.includes("UNIQUE constraint failed")) {
+      return NextResponse.json(
+        { error: "Email sudah terdaftar." },
+        { status: 409 }
+      );
+    }
+    
     return NextResponse.json(
       { error: "Terjadi kesalahan server." },
       { status: 500 }
