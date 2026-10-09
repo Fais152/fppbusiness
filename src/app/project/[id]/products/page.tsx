@@ -7,22 +7,29 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, Trash2, Save, X, Package } from "lucide-react";
+import { Plus, Trash2, Save, X, Package, Lock, Crown } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { UpgradeModal } from "@/components/UpgradeModal";
 
 export default function ProductsTab() {
   const params = useParams();
-  const { projects, updateProject } = useProjectStore();
+  const { projects, updateProject, userTier } = useProjectStore();
   const project = projects.find(p => p.id === params.id);
 
   const [form, setForm] = useState<Product | null>(null);
   const [isNew, setIsNew] = useState(false);
+  const [upgradeModalOpen, setUpgradeModalOpen] = useState(false);
 
   if (!project) return null;
 
   const products = project.products || [];
+  const isAtLimit = userTier === 'FREE' && products.length >= 10;
 
   const handleCreateNew = () => {
+    if (isAtLimit) {
+      setUpgradeModalOpen(true);
+      return;
+    }
     setIsNew(true);
     setForm({
       id: crypto.randomUUID(),
@@ -105,9 +112,31 @@ export default function ProductsTab() {
       {/* Sidebar List */}
       <div>
         <div className="flex justify-between items-center mb-6">
-          <span className="text-xs text-muted-foreground uppercase tracking-widest font-bold">Produk ({products.length})</span>
-          <Button onClick={handleCreateNew} size="sm" className="gradient-bg rounded-lg shadow-sm"><Plus className="w-4 h-4 mr-1" /> Baru</Button>
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-muted-foreground uppercase tracking-widest font-bold">Produk ({products.length}{userTier === 'FREE' ? '/10' : ''})</span>
+            {userTier === 'FREE' && products.length >= 8 && (
+              <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#F5A623]/20 text-[#B45309] dark:text-[#FBBF24] font-bold">
+                {10 - products.length} slot tersisa
+              </span>
+            )}
+          </div>
+          <Button onClick={handleCreateNew} size="sm" className="gradient-bg rounded-lg shadow-sm" disabled={isAtLimit}>
+            {isAtLimit ? <Lock className="w-4 h-4 mr-1" /> : <Plus className="w-4 h-4 mr-1" />}
+            {isAtLimit ? 'Limit' : 'Baru'}
+          </Button>
         </div>
+
+        {isAtLimit && (
+          <div className="mb-4 p-3 rounded-xl bg-[#F5A623]/10 border border-[#F5A623]/30 text-xs">
+            <div className="flex items-center gap-2 text-[#B45309] dark:text-[#FBBF24] font-semibold mb-1">
+              <Crown className="w-4 h-4 text-[#F5A623]" />
+              <span>Batas Free Tier Tercapai</span>
+            </div>
+            <p className="text-muted-foreground text-[11px] leading-relaxed">
+              Anda sudah mencapai maksimal 10 produk. Upgrade ke Premium untuk menambah produk tanpa batas.
+            </p>
+          </div>
+        )}
         
         <div className="space-y-3">
           <AnimatePresence>
@@ -199,7 +228,7 @@ export default function ProductsTab() {
               </div>
               
               {form.ingredients.length === 0 ? (
-                <div className="p-8 text-center text-sm text-muted-foreground">Belum ada bahan baku. Klik '+ Bahan'.</div>
+                <div className="p-8 text-center text-sm text-muted-foreground">Belum ada bahan baku. Klik &apos;+ Bahan&apos;.</div>
               ) : (
                 <div className="divide-y divide-border/50">
                   {form.ingredients.map((ing, idx) => (
@@ -286,6 +315,11 @@ export default function ProductsTab() {
         </div>
       )}
 
+      <UpgradeModal
+        isOpen={upgradeModalOpen}
+        onClose={() => setUpgradeModalOpen(false)}
+        featureName="Produk Tanpa Batas"
+      />
     </div>
   );
 }

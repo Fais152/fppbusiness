@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus, FolderOpen, Trash2, Loader2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { EducationBanner } from "@/components/EducationBanner";
 
 export default function Dashboard() {
   const router = useRouter();
@@ -56,8 +57,7 @@ export default function Dashboard() {
 
   return (
     <div className="container max-w-6xl mx-auto px-4 py-12 relative">
-      {/* Decorative blob */}
-      <div className="absolute top-10 right-10 w-96 h-96 bg-primary/5 rounded-full blur-3xl -z-10 animate-blob pointer-events-none"></div>
+      <EducationBanner />
 
       <motion.div
         initial={{ opacity: 0, y: -20 }}

@@ -8,7 +8,7 @@
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-sans);
-  --font-retro: var(--font-retro);
+  --font-display: var(--font-display);
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
@@ -41,10 +41,10 @@
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) * 1.4);
-  --radius-2xl: calc(var(--radius) * 1.8);
-  --radius-3xl: calc(var(--radius) * 2.2);
-  --radius-4xl: calc(var(--radius) * 2.6);
+  --radius-xl: calc(var(--radius) * 1.3);
+  --radius-2xl: calc(var(--radius) * 1.6);
+  --radius-3xl: calc(var(--radius) * 2.0);
+  --radius-4xl: calc(var(--radius) * 2.5);
   /* Semantic indicator colors */
   --color-success: var(--success);
   --color-warning: var(--warning);
@@ -53,79 +53,84 @@
 }
 
 :root {
-  /* ─── LIGHT MODE: Warm Paper ─── */
-  --background: oklch(0.975 0.005 250);
-  --foreground: oklch(0.18 0.02 260);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.18 0.02 260);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.18 0.02 260);
-  --primary: oklch(0.55 0.15 195);          /* Teal */
-  --primary-foreground: oklch(0.98 0 0);
-  --secondary: oklch(0.94 0.01 250);
-  --secondary-foreground: oklch(0.35 0.02 260);
-  --muted: oklch(0.95 0.005 250);
-  --muted-foreground: oklch(0.50 0.02 260);
-  --accent: oklch(0.94 0.02 250);
-  --accent-foreground: oklch(0.25 0.02 260);
-  --destructive: oklch(0.55 0.2 25);
-  --border: oklch(0.88 0.01 250);
-  --input: oklch(0.88 0.01 250);
-  --ring: oklch(0.55 0.15 195);
-  /* Charts - diverse palette */
-  --chart-1: oklch(0.55 0.15 195);          /* Teal */
-  --chart-2: oklch(0.65 0.15 145);          /* Green */
-  --chart-3: oklch(0.7 0.15 70);            /* Amber */
-  --chart-4: oklch(0.6 0.2 300);            /* Purple */
-  --chart-5: oklch(0.6 0.15 25);            /* Warm Red */
+  /* ─── HPPmate LIGHT MODE: Warm Off-White (#FDFBF6) + Navy (#1E3A8A) + Golden Yellow (#F5A623) ─── */
+  --background: #FDFBF6;
+  --foreground: #0F172A;
+  --card: #FFFFFF;
+  --card-foreground: #0F172A;
+  --popover: #FFFFFF;
+  --popover-foreground: #0F172A;
+  --primary: #1E3A8A;                     /* HPPmate Navy Blue */
+  --primary-foreground: #FFFFFF;
+  --secondary: #F1EFE8;
+  --secondary-foreground: #1E3A8A;
+  --muted: #F5F2EB;
+  --muted-foreground: #64748B;
+  --accent: #F5A623;                      /* HPPmate Golden Yellow / Accent */
+  --accent-foreground: #0F172A;
+  --destructive: #EF4444;
+  --border: #E8E4DA;
+  --input: #E2DDD2;
+  --ring: #1E3A8A;
+
+  /* Charts */
+  --chart-1: #1E3A8A;                     /* Navy */
+  --chart-2: #F5A623;                     /* Golden Yellow */
+  --chart-3: #10B981;                     /* Emerald Green */
+  --chart-4: #0284C7;                     /* Sky Blue */
+  --chart-5: #F97316;                     /* Orange */
+
   /* Semantic */
-  --success: oklch(0.6 0.17 145);
-  --warning: oklch(0.75 0.15 75);
-  --danger: oklch(0.58 0.2 25);
-  --info: oklch(0.6 0.14 240);
-  --radius: 0.125rem;
+  --success: #10B981;
+  --warning: #F5A623;
+  --danger: #EF4444;
+  --info: #0284C7;
+  --radius: 0.75rem;                      /* Friendly slightly rounded corner */
 }
 
 .dark {
-  /* ─── DARK MODE: Deep Slate ─── */
-  --background: oklch(0.16 0.015 260);
-  --foreground: oklch(0.93 0.005 250);
-  --card: oklch(0.20 0.015 260);
-  --card-foreground: oklch(0.93 0.005 250);
-  --popover: oklch(0.20 0.015 260);
-  --popover-foreground: oklch(0.93 0.005 250);
-  --primary: oklch(0.75 0.14 195);          /* Bright Teal */
-  --primary-foreground: oklch(0.13 0.02 260);
-  --secondary: oklch(0.24 0.015 260);
-  --secondary-foreground: oklch(0.88 0.005 250);
-  --muted: oklch(0.22 0.01 260);
-  --muted-foreground: oklch(0.63 0.01 250);
-  --accent: oklch(0.24 0.015 260);
-  --accent-foreground: oklch(0.88 0.005 250);
-  --destructive: oklch(0.6 0.2 25);
-  --border: oklch(0.30 0.015 260);
-  --input: oklch(0.28 0.015 260);
-  --ring: oklch(0.75 0.14 195);
+  /* ─── HPPmate DARK MODE: Deep Slate/Navy (#0D1117) + Navy Glow (#3B82F6) + Gold (#F5A623) ─── */
+  --background: #0D1117;
+  --foreground: #F8FAFC;
+  --card: #161B22;
+  --card-foreground: #F8FAFC;
+  --popover: #161B22;
+  --popover-foreground: #F8FAFC;
+  --primary: #2563EB;                     /* Vibrant Navy/Blue in Dark */
+  --primary-foreground: #FFFFFF;
+  --secondary: #21262D;
+  --secondary-foreground: #F8FAFC;
+  --muted: #1E232B;
+  --muted-foreground: #94A3B8;
+  --accent: #F5A623;                      /* Golden Yellow */
+  --accent-foreground: #0F172A;
+  --destructive: #F87171;
+  --border: #30363D;
+  --input: #30363D;
+  --ring: #3B82F6;
+
   /* Charts */
-  --chart-1: oklch(0.75 0.14 195);          /* Teal */
-  --chart-2: oklch(0.72 0.15 145);          /* Green */
-  --chart-3: oklch(0.78 0.12 75);           /* Amber */
-  --chart-4: oklch(0.7 0.15 300);           /* Purple */
-  --chart-5: oklch(0.68 0.14 25);           /* Rose */
+  --chart-1: #3B82F6;
+  --chart-2: #F5A623;
+  --chart-3: #34D399;
+  --chart-4: #38BDF8;
+  --chart-5: #FB923C;
+
   /* Semantic */
-  --success: oklch(0.72 0.17 150);
-  --warning: oklch(0.82 0.13 80);
-  --danger: oklch(0.65 0.2 25);
-  --info: oklch(0.72 0.12 240);
+  --success: #34D399;
+  --warning: #FBBF24;
+  --danger: #F87171;
+  --info: #38BDF8;
+
   /* Sidebar */
-  --sidebar: oklch(0.18 0.015 260);
-  --sidebar-foreground: oklch(0.93 0.005 250);
-  --sidebar-primary: oklch(0.75 0.14 195);
-  --sidebar-primary-foreground: oklch(0.13 0.02 260);
-  --sidebar-accent: oklch(0.24 0.015 260);
-  --sidebar-accent-foreground: oklch(0.88 0.005 250);
-  --sidebar-border: oklch(0.30 0.015 260);
-  --sidebar-ring: oklch(0.75 0.14 195);
+  --sidebar: #161B22;
+  --sidebar-foreground: #F8FAFC;
+  --sidebar-primary: #3B82F6;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #21262D;
+  --sidebar-accent-foreground: #F8FAFC;
+  --sidebar-border: #30363D;
+  --sidebar-ring: #3B82F6;
 }
 
 @layer base {
@@ -133,60 +138,70 @@
     @apply border-border outline-ring/50;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
   }
-  html {
-    @apply font-sans;
+  h1, h2, h3, .font-display {
+    font-family: var(--font-display), sans-serif;
   }
 }
 
-@utility retro-heading {
-  @apply font-retro uppercase tracking-widest;
-}
-
-@utility glass {
-  @apply bg-card/80 backdrop-blur-md border border-border/60 shadow-sm;
+@utility font-display {
+  font-family: var(--font-display), sans-serif;
 }
 
 @utility glass-card {
-  @apply bg-card border border-border shadow-sm transition-all duration-200 hover:shadow-md hover:border-primary/30;
+  @apply bg-card border border-border/80 shadow-sm transition-all duration-200 hover:shadow-md hover:border-primary/40 rounded-xl;
 }
 
-@utility gradient-text {
-  @apply text-transparent bg-clip-text bg-gradient-to-r from-primary to-info;
+@utility playful-card {
+  @apply bg-card border-2 border-border shadow-[3px_3px_0px_0px_rgba(30,58,138,0.15)] dark:shadow-[3px_3px_0px_0px_rgba(245,166,35,0.2)] rounded-2xl transition-all duration-200 hover:translate-y-[-2px];
 }
 
 @utility gradient-bg {
-  @apply bg-gradient-to-r from-primary to-[oklch(0.6_0.14_220)] text-primary-foreground border-0;
+  @apply bg-[#1E3A8A] text-white;
 }
 
-/* Subtle grid background for dark mode */
-.dark body {
-  background-image:
-    radial-gradient(circle at 1px 1px, oklch(0.25 0.01 260) 1px, transparent 0);
-  background-size: 32px 32px;
+@utility hpp-badge-accent {
+  @apply bg-[#F5A623]/15 text-[#D97706] dark:text-[#FBBF24] border border-[#F5A623]/30 font-semibold px-2.5 py-0.5 rounded-full text-xs;
 }
 
-/* Subtle dot background for light mode */
+@utility hpp-badge-primary {
+  @apply bg-[#1E3A8A]/10 text-[#1E3A8A] dark:bg-[#3B82F6]/20 dark:text-[#93C5FD] border border-[#1E3A8A]/20 dark:border-[#3B82F6]/30 font-semibold px-2.5 py-0.5 rounded-full text-xs;
+}
+
+/* Subtle dot background for brand texture (light & dark) */
 :root body {
-  background-image:
-    radial-gradient(circle at 1px 1px, oklch(0.90 0.005 250) 0.5px, transparent 0);
+  background-image: radial-gradient(circle at 1px 1px, #E5E1D6 1px, transparent 0);
   background-size: 24px 24px;
 }
 
-@keyframes blob {
-  0% { transform: translate(0px, 0px) scale(1); }
-  33% { transform: translate(30px, -50px) scale(1.1); }
-  66% { transform: translate(-20px, 20px) scale(0.9); }
-  100% { transform: translate(0px, 0px) scale(1); }
+.dark body {
+  background-image: radial-gradient(circle at 1px 1px, #21262D 1px, transparent 0);
+  background-size: 28px 28px;
 }
 
-@utility animate-blob {
-  animation: blob 7s infinite;
-}
-
-/* Scrollbar styling */
+/* Clean scrollbar */
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--muted-foreground); }
+
+/* Print Styles for PDF Report */
+@media print {
+  body {
+    background: #FFFFFF !important;
+    background-image: none !important;
+    color: #000000 !important;
+  }
+  header, nav, .no-print, button {
+    display: none !important;
+  }
+  .print-only {
+    display: block !important;
+  }
+  .glass-card, .playful-card {
+    box-shadow: none !important;
+    border: 1px solid #CCCCCC !important;
+    break-inside: avoid;
+  }
+}

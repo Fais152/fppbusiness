@@ -72,7 +72,7 @@ export default function ProjectDashboardTab() {
         <Card className="bg-card/60 rounded-xl">
           <CardContent className="p-5">
             <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold mb-2">Total Modal</p>
-            <p className="text-2xl font-black text-purple-400">Rp {(totalCapital / 1e6).toFixed(1)}M</p>
+            <p className="text-2xl font-black text-[#1E3A8A] dark:text-blue-400">Rp {(totalCapital / 1e6).toFixed(1)}M</p>
             <p className="text-xs text-muted-foreground mt-1">Investasi Awal</p>
           </CardContent>
         </Card>

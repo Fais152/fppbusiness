@@ -18,6 +18,7 @@ export async function GET(
     include: {
       products: { include: { ingredients: true } },
       capitalItems: true,
+      transactions: { orderBy: { date: "desc" } },
     },
   });
 
@@ -28,7 +29,7 @@ export async function GET(
   return NextResponse.json(project);
 }
 
-// PUT replace full project data (including products & capital items)
+// PUT replace full project data (including products, capital items, and transactions)
 export async function PUT(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -47,8 +48,8 @@ export async function PUT(
     return NextResponse.json({ error: "Not found or unauthorized" }, { status: 403 });
   }
 
-  // Transaction: update project scalar fields, then replace products & capitalItems
-  const result = await prisma.$transaction(async (tx: any) => {
+  // Transaction: update project scalar fields, then replace products & capitalItems & transactions
+  const result = await prisma.$transaction(async (tx) => {
     // Update scalar fields
     await tx.project.update({
       where: { id },
@@ -61,9 +62,7 @@ export async function PUT(
     });
 
     // --- Sync Products ---
-    // Delete old products (cascade deletes ingredients)
     await tx.product.deleteMany({ where: { projectId: id } });
-    // Create new products with ingredients
     if (body.products && body.products.length > 0) {
       for (const prod of body.products) {
         await tx.product.create({
@@ -77,12 +76,12 @@ export async function PUT(
             overhead: prod.overhead,
             projectId: id,
             ingredients: {
-              create: (prod.ingredients || []).map((ing: any) => ({
+              create: (prod.ingredients || []).map((ing: { id?: string; name: string; qty?: number; unit?: string; unitCost?: number }) => ({
                 id: ing.id,
                 name: ing.name,
-                qty: ing.qty,
-                unit: ing.unit,
-                unitCost: ing.unitCost,
+                qty: Number(ing.qty) || 0,
+                unit: ing.unit || "gr",
+                unitCost: Number(ing.unitCost) || 0,
               })),
             },
           },
@@ -94,11 +93,27 @@ export async function PUT(
     await tx.capitalItem.deleteMany({ where: { projectId: id } });
     if (body.capitalItems && body.capitalItems.length > 0) {
       await tx.capitalItem.createMany({
-        data: body.capitalItems.map((item: any) => ({
+        data: body.capitalItems.map((item: { id?: string; name: string; category?: string; cost?: number }) => ({
           id: item.id,
           name: item.name,
           category: item.category,
-          cost: item.cost,
+          cost: Number(item.cost) || 0,
+          projectId: id,
+        })),
+      });
+    }
+
+    // --- Sync Transactions ---
+    await tx.dailyTransaction.deleteMany({ where: { projectId: id } });
+    if (body.transactions && body.transactions.length > 0) {
+      await tx.dailyTransaction.createMany({
+        data: body.transactions.map((t: { id?: string; date?: string; type?: string; amount?: number; category?: string; description?: string }) => ({
+          id: t.id,
+          date: t.date ? new Date(t.date) : new Date(),
+          type: t.type || "IN",
+          amount: Number(t.amount) || 0,
+          category: t.category || "Penjualan",
+          description: t.description || null,
           projectId: id,
         })),
       });
@@ -110,6 +125,7 @@ export async function PUT(
       include: {
         products: { include: { ingredients: true } },
         capitalItems: true,
+        transactions: { orderBy: { date: "desc" } },
       },
     });
   });
@@ -129,7 +145,6 @@ export async function DELETE(
 
   const { id } = await params;
   
-  // Try to find the exact project for this user
   const existing = await prisma.project.findUnique({ where: { id, userId: session.user.id } });
   if (!existing) {
     return NextResponse.json({ error: "Not found or unauthorized" }, { status: 403 });

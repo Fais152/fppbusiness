@@ -13,7 +13,7 @@ const CAT_COLORS: Record<string, string> = {
   'Peralatan': '#f5a623',
   'Furnitur': '#3ecf6a',
   'Renovasi': '#6c8ef5',
-  'Legalitas': '#a855f7',
+  'Legalitas': '#f5a623',
   'Bahan Baku': '#ff5c5c',
   'Sewa': '#22d3ee',
   'Operasional': '#f97316'

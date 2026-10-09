@@ -26,23 +26,40 @@ export interface CapitalItem {
   cost: number;
 }
 
+export interface DailyTransaction {
+  id: string;
+  projectId: string;
+  date: string;
+  type: 'IN' | 'OUT';
+  amount: number;
+  category: string;
+  description?: string;
+  createdAt?: string;
+}
+
 export interface BusinessProject {
   id: string;
   businessName: string;
   industryCategory: string;
   products: Product[];
   capitalItems: CapitalItem[];
+  transactions?: DailyTransaction[];
   bepMonthlyOps: number;
   bepTargetDays: number;
   createdAt: string;
 }
+
+export type UserTier = 'FREE' | 'PREMIUM';
 
 interface ProjectState {
   projects: BusinessProject[];
   currentProjectId: string | null;
   loading: boolean;
   syncing: boolean;
+  userTier: UserTier;
 
+  setUserTier: (tier: UserTier) => void;
+  toggleUserTier: () => void;
   fetchProjects: () => Promise<void>;
   fetchProject: (id: string) => Promise<BusinessProject | null>;
   createProject: (init?: Partial<BusinessProject>) => Promise<string>;
@@ -50,6 +67,8 @@ interface ProjectState {
   updateProject: (id: string, updates: Partial<BusinessProject>) => void;
   saveProject: (id: string) => Promise<void>;
   deleteProject: (id: string) => Promise<void>;
+  addTransaction: (projectId: string, tx: Omit<DailyTransaction, 'id'>) => void;
+  deleteTransaction: (projectId: string, txId: string) => void;
 }
 
 export const useProjectStore = create<ProjectState>()((set, get) => ({
@@ -57,13 +76,21 @@ export const useProjectStore = create<ProjectState>()((set, get) => ({
   currentProjectId: null,
   loading: false,
   syncing: false,
+  userTier: 'FREE',
+
+  setUserTier: (tier) => set({ userTier: tier }),
+  toggleUserTier: () => set(state => ({ userTier: state.userTier === 'FREE' ? 'PREMIUM' : 'FREE' })),
 
   fetchProjects: async () => {
     set({ loading: true });
     try {
       const res = await fetch('/api/projects');
+      if (!res.ok) {
+        set({ loading: false });
+        return;
+      }
       const data = await res.json();
-      set({ projects: data, loading: false });
+      set({ projects: Array.isArray(data) ? data : [], loading: false });
     } catch {
       set({ loading: false });
     }
@@ -74,7 +101,6 @@ export const useProjectStore = create<ProjectState>()((set, get) => ({
       const res = await fetch(`/api/projects/${id}`);
       if (!res.ok) return null;
       const data = await res.json();
-      // Update in local state
       set(state => ({
         projects: state.projects.some(p => p.id === id)
           ? state.projects.map(p => p.id === id ? data : p)
@@ -105,14 +131,12 @@ export const useProjectStore = create<ProjectState>()((set, get) => ({
 
   setCurrentProject: (id) => set({ currentProjectId: id }),
 
-  // Optimistic local update (call saveProject after to persist)
   updateProject: (id, updates) => set(state => ({
     projects: state.projects.map(proj =>
       proj.id === id ? { ...proj, ...updates } : proj
     )
   })),
 
-  // Persist current state to server
   saveProject: async (id: string) => {
     const project = get().projects.find(p => p.id === id);
     if (!project) return;
@@ -135,4 +159,34 @@ export const useProjectStore = create<ProjectState>()((set, get) => ({
     }));
     await fetch(`/api/projects/${id}`, { method: 'DELETE' });
   },
+
+  addTransaction: (projectId, tx) => {
+    const newTx: DailyTransaction = {
+      ...tx,
+      id: crypto.randomUUID(),
+      createdAt: new Date().toISOString(),
+    };
+    set(state => ({
+      projects: state.projects.map(p => {
+        if (p.id !== projectId) return p;
+        const currentTxs = p.transactions || [];
+        return {
+          ...p,
+          transactions: [newTx, ...currentTxs],
+        };
+      })
+    }));
+  },
+
+  deleteTransaction: (projectId, txId) => {
+    set(state => ({
+      projects: state.projects.map(p => {
+        if (p.id !== projectId) return p;
+        return {
+          ...p,
+          transactions: (p.transactions || []).filter(t => t.id !== txId),
+        };
+      })
+    }));
+  }
 }));

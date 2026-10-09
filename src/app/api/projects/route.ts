@@ -17,6 +17,7 @@ export async function GET() {
         include: { ingredients: true },
       },
       capitalItems: true,
+      transactions: true,
     },
     orderBy: { createdAt: "desc" },
   });

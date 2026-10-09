@@ -11,24 +11,26 @@ model User {
   name         String?
   email        String    @unique
   passwordHash String
+  tier         String    @default("FREE") // "FREE" | "PREMIUM"
   createdAt    DateTime  @default(now())
   projects     Project[]
 }
 
 model Project {
-  id               String        @id @default(uuid())
-  businessName     String        @default("Proyek Baru")
-  industryCategory String        @default("F&B")
-  bepMonthlyOps    Float         @default(500000)
-  bepTargetDays    Int           @default(30)
-  createdAt        DateTime      @default(now())
-  updatedAt        DateTime      @updatedAt
+  id               String             @id @default(uuid())
+  businessName     String             @default("Proyek Baru")
+  industryCategory String             @default("F&B")
+  bepMonthlyOps    Float              @default(500000)
+  bepTargetDays    Int                @default(30)
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
 
   userId       String
-  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User               @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   products     Product[]
   capitalItems CapitalItem[]
+  transactions DailyTransaction[]
 }
 
 model Product {
@@ -48,11 +50,11 @@ model Product {
 }
 
 model Ingredient {
-  id       String  @id @default(uuid())
-  name     String
-  qty      Float   @default(0)
-  unit     String  @default("gr")
-  unitCost Float   @default(0)
+  id            String  @id @default(uuid())
+  name          String
+  qty           Float   @default(0)
+  unit          String  @default("gr")
+  unitCost      Float   @default(0)
 
   productId String
   product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
@@ -66,4 +68,16 @@ model CapitalItem {
 
   projectId String
   project   Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+}
+
+model DailyTransaction {
+  id          String   @id @default(uuid())
+  projectId   String
+  project     Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  date        DateTime @default(now())
+  type        String   @default("IN")
+  amount      Float    @default(0)
+  category    String   @default("Penjualan")
+  description String?
+  createdAt   DateTime @default(now())
 }
