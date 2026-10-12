@@ -34,7 +34,7 @@ export function Header() {
             </span>
           </Link>
 
-          <nav className="flex items-center space-x-1 text-sm font-medium">
+           <nav className="hidden md:flex items-center space-x-1 text-sm font-medium">
             <Link
               href="/dashboard"
               className="px-3 py-1.5 transition-colors hover:text-primary text-muted-foreground rounded-lg hover:bg-muted font-medium text-xs sm:text-sm"

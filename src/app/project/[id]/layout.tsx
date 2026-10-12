@@ -168,7 +168,7 @@ export default function ProjectLayout({ children }: { children: React.ReactNode 
       </div>
 
       {/* Main Content Area */}
-      <div className="glass-card min-h-[500px] p-4 sm:p-6 rounded-2xl">
+      <div className="glass-card min-h-screen p-4 sm:p-6 rounded-2xl">
         {children}
       </div>
 

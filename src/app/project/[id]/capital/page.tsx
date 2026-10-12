@@ -55,7 +55,7 @@ export default function CapitalTab() {
   const sortedCategories = Object.keys(categoryMap).map(k => ({ name: k, val: categoryMap[k] })).sort((a,b) => b.val - a.val);
 
   return (
-    <div className="grid lg:grid-cols-[1fr_320px] gap-8 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="flex flex-col gap-8 animate-in fade-in slide-in-from-bottom-4 duration-500 lg:grid lg:grid-cols-[1fr_300px]">
       
       <div>
         <div className="flex justify-between items-center mb-6">
@@ -66,7 +66,7 @@ export default function CapitalTab() {
         </div>
 
         {adding && (
-          <div className="bg-card/60 border border-primary/20 p-4 rounded-lg mb-6 shadow-sm grid md:grid-cols-[1fr_150px_150px_auto] gap-4 items-end">
+          <div className="bg-card/60 border border-primary/20 p-4 rounded-lg mb-6 shadow-sm flex flex-col gap-4 md:grid md:grid-cols-[1fr_140px_140px_auto] md:items-end">
             <div className="space-y-1.5">
               <Label className="text-xs">Nama Item</Label>
               <Input value={form.name} onChange={e => setForm({...form, name: e.target.value})} placeholder="Cth: Mesin Kopi" />

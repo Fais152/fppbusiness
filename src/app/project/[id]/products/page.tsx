@@ -107,7 +107,7 @@ export default function ProductsTab() {
   const fmarg = fsell > 0 ? (fprofit / fsell) * 100 : 0;
 
   return (
-    <div className="flex flex-col md:grid md:grid-cols-[300px_1fr] gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
+    <div className="flex flex-col gap-6 animate-in fade-in slide-in-from-bottom-4 duration-500 md:grid md:grid-cols-[280px_1fr]">
       
       {/* Sidebar List */}
       <div>

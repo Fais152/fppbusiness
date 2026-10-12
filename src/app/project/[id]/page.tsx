@@ -47,7 +47,7 @@ export default function ProjectDashboardTab() {
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500">
 
       {/* Stat Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
         <Card className="bg-card/60 rounded-xl">
           <CardContent className="p-5">
             <p className="text-[10px] text-muted-foreground uppercase tracking-widest font-bold mb-2">Total Produk</p>
@@ -78,7 +78,7 @@ export default function ProjectDashboardTab() {
         </Card>
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-6">
+      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-2">
         <Card className="bg-card/60 flex flex-col rounded-xl">
           <CardHeader>
             <CardDescription className="uppercase tracking-widest font-bold text-[10px]">HPP vs Profit per Produk</CardDescription>
